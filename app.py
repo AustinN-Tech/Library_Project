@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("database.db")
+conn = sqlite3.connect(":memory:")
 
 c = conn.cursor()
 
@@ -14,16 +14,17 @@ CREATE TABLE IF NOT EXISTS books (
 """)
 
 def error_handling(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         try:
-            func
-        except:
-            print("Error")
-    return wrapper()
+            return func(*args, **kwargs)
+        except Exception as e:
+            print("Error", e)
+    return wrapper
 
 @error_handling
-def add_book():
-    pass
+def add_book(title, author):
+    with conn:
+        c.execute("INSERT INTO books (title, author) VALUES (?, ?)", (title, author))
 
 @error_handling
 def delete_book():
@@ -34,8 +35,15 @@ def update_book():
     pass
 
 @error_handling
-def get_book():
-    pass
+def get_book(title):
+    with conn:
+        c.execute("SELECT * FROM books WHERE title=(?)", (title,))
+        print(c.fetchone())
+
+add_book("Test 2", "Sir Bubbles")
+add_book("Test 1", "Sir Bubbles")
+get_book("Test 1")
+
 
 conn.commit()
 conn.close()
