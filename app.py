@@ -63,6 +63,17 @@ def prompt_update():
 
     return title, column, value
 
+
+def display_all_books():
+    with conn:
+        c.execute("SELECT * FROM books")
+        pass
+
+
+def return_formatted_output(title, author, date_added):
+    formatted_output = f"Book Title: {title}\nBook Author: {author}\nDate Added: {date_added}"
+    return formatted_output
+
 @error_handling
 def get_book(title):
     with conn:
