@@ -67,7 +67,17 @@ def prompt_update():
 def display_all_books():
     with conn:
         c.execute("SELECT * FROM books")
-        pass
+        results = c.fetchall()
+
+        if results:
+            data = [] # create empty list to store results
+
+            for row in results:
+                data.append(return_formatted_output(row[1], row[2], row[3])) # append list with formatted data
+
+            return data
+        else:
+            print("No books found.")
 
 
 def return_formatted_output(title, author, date_added):
@@ -78,15 +88,15 @@ def return_formatted_output(title, author, date_added):
 def get_book(title):
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
-        print(c.fetchone())
+        if (c.fetchone()): # if result found, print result
+            print(c.fetchone())
+        else: # no result, print not found
+            print(f"No book found with title {title}.")
 
-add_book("Test 1".lower(), "John Doe".lower())
-
-title, column, value = prompt_update()
-update_book(title, column, value)
-
+add_book("Test 1", "John Doe")
 add_book("Test 2", "Jane Doe")
-get_book("Test 3".lower())
+
+
 
 
 conn.commit()
