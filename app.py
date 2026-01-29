@@ -39,6 +39,7 @@ def update_book(title, column, value):
         c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
 
 def prompt_update():
+    print("-== Updating Book ==-\n")
     title = input("Enter title of book to update: ").strip().lower()
     while not title:        
         print("Title cannot be empty. Enter a title.")
@@ -63,6 +64,20 @@ def prompt_update():
 
     return title, column, value
 
+def prompt_add_book():
+  print("-== Adding New Book ==-\n")
+  title = input("Enter title of book: ").strip().lower()
+  while not title:
+    print("Title cannot be empty. Enter a title.")
+    title = input("\nEnter title of book: ").strip().lower()
+  print("\n")
+
+  author = input("Enter author of book: ")
+  if not author:
+    author = "Unknown"
+  print("\n")
+
+  return title, author
 
 def display_all_books():
     with conn:
@@ -88,13 +103,19 @@ def return_formatted_output(title, author, date_added):
 def get_book(title):
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
-        if (c.fetchone()): # if result found, print result
-            print(c.fetchone())
-        else: # no result, print not found
-            print(f"No book found with title {title}.")
+        return c.fetchone()
+        #if (c.fetchone()): # if result found, print result
+        #    print(c.fetchone())
+        #else: # no result, print not found
+        #    print(f"No book found with title {title}.")
 
 add_book("Test 1", "John Doe")
+
 add_book("Test 2", "Jane Doe")
+
+data = display_all_books()
+for i in data:
+  print(i, "\n")
 
 
 
