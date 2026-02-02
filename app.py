@@ -1,5 +1,16 @@
 import sqlite3
+import logging
 from utility_functions import error_handling, get_author, get_title, get_genre, return_formatted_output
+
+
+log_file = "app_log.log"
+logging.basicConfig(
+    format='%(asctime)s - %(levelname)s: %(message)s', 
+    filename=log_file, 
+    filemode='w', 
+    level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.debug(f"Logger initialized in app.py.")
 
 
 conn = sqlite3.connect(":memory:")
@@ -21,17 +32,20 @@ def add_book(title, author, genre):
     with conn:
         c.execute("INSERT INTO books (title, author, genre) VALUES (?, ?, ?)", (title, author, genre))
         print(f"{title} added.\n")
+        logger.info(f"Added Book: {title}")
 
 @error_handling
 def delete_book(title):
     with conn:
         c.execute("DELETE FROM books WHERE title=(?)", (title,))
         print(f"{title} deleted.\n")
+        logger.info(f"Deleted Book: {title}")
 
 @error_handling
 def update_book(title, column, value):
     with conn:
         c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
+        logger.info(f"Updated Book '{title}', updated {column} with new value of {value}")
 
 def prompt_update():
     print("-== Updating Book ==-\n")
@@ -69,14 +83,17 @@ def display_all_books():
             for row in results:
                 data.append(return_formatted_output(row[1], row[2], row[3], row[4])) # append list with formatted data
 
+            logger.info("Returned All Book Data")
             return data
         else:
             print("No books found.")
+            logger.info("No books found in database.")
 
 @error_handling
 def get_book(title):
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
+        logger.info(f"Returned get_book() data: {title}")
         return c.fetchone()
 
 def terminal_menu():

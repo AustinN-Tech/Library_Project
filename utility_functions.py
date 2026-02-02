@@ -1,11 +1,18 @@
+import logging
+import sqlite3
+
+logger = logging.getLogger(__name__)
+
 from datetime import datetime
 
-def error_handling(func):
+def error_handling(func): #error handling logic decorator
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except sqlite3.Error as e:
+            logger.error(f"Database error occurred in {func.__name__}: {e}") #returns original function name, good for logging
         except Exception as e:
-            print("Error: ", e)
+            logger.error(f"Error occurred in {func.__name__}: {e}")
     return wrapper
 
 def get_title():
