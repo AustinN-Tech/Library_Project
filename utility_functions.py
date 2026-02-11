@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 from datetime import datetime
 
-def error_handling(func): #error handling logic decorator
+def error_handling(func) -> function: #error handling logic decorator
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -15,7 +15,7 @@ def error_handling(func): #error handling logic decorator
             logger.error(f"Error occurred in {func.__name__}: {e}")
     return wrapper
 
-def get_title():
+def get_title() -> str:
     title = input("Enter title of book: ").strip().lower()
     while not title:
         print("Title cannot be empty. Enter a title.")
@@ -23,14 +23,14 @@ def get_title():
 
     return title
 
-def get_author():
+def get_author() -> str:
     author = input("Enter author of book: ").strip().lower()
     if not author: 
         author = "unknown"
 
     return author
 
-def get_genre():
+def get_genre() -> str:
     genre = input("Enter genre of book: ").strip().lower()
     while not genre:
         print("Genre cannot be empty. Enter a genre.")
@@ -38,7 +38,7 @@ def get_genre():
 
     return genre
 
-def return_formatted_output(title, author, genre, date_added):
+def return_formatted_output(title, author, genre, date_added) -> str:
     dt = datetime.fromtimestamp(date_added) # formatting time to datetime
     formatted_output = f"Book Title: {title.title()}\nBook Author: {author.title()}\nGenre: {genre.title()}\nDate Added: {dt.strftime('%Y-%m-%d')}"
     return formatted_output

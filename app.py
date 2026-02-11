@@ -28,26 +28,27 @@ CREATE TABLE IF NOT EXISTS books (
 """)
 
 @error_handling
-def add_book(title, author, genre):
+def add_book(title: str, author: str, genre: str) -> None:
     with conn:
         c.execute("INSERT INTO books (title, author, genre) VALUES (?, ?, ?)", (title, author, genre))
         print(f"{title} added.\n")
         logger.info(f"Added Book: {title}")
 
 @error_handling
-def delete_book(title):
+def delete_book(title: str) -> None:
     with conn:
         c.execute("DELETE FROM books WHERE title=(?)", (title,))
         print(f"{title} deleted.\n")
         logger.info(f"Deleted Book: {title}")
 
 @error_handling
-def update_book(title, column, value):
+def update_book(title: str, column: str, value: str) -> None:
     with conn:
         c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
         logger.info(f"Updated Book '{title}', updated {column} with new value of {value}")
 
-def prompt_update():
+# redo this function
+def prompt_update() -> str:
     print("-== Updating Book ==-\n")
     title = get_title()
     print("\n")
@@ -72,7 +73,7 @@ def prompt_update():
 
     return title, column, value
 
-def display_all_books():
+def display_all_books() -> list[str]:
     with conn:
         c.execute("SELECT * FROM books")
         results = c.fetchall()
@@ -90,7 +91,7 @@ def display_all_books():
             logger.info("No books found in database.")
 
 @error_handling
-def get_book(title):
+def get_book(title: str) -> tuple[any]:
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
         logger.info(f"Returned get_book() data: {title}")
@@ -141,12 +142,17 @@ def terminal_menu():
     else:
         print("Please enter a valid number.")
 
-add_book("Test 1".lower(), "John Doe".lower(), "horror")
 
-add_book("Test 2".lower(), "Jane Doe".lower(), "adventure")
+def main() -> None:
+    add_book("Test 1".lower(), "John Doe".lower(), "horror")
 
-terminal_menu()
+    add_book("Test 2".lower(), "Jane Doe".lower(), "adventure")
 
+    terminal_menu()
+
+
+if __name__ == "__main__":
+    main()
 
 conn.commit()
 conn.close()
