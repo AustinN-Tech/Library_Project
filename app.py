@@ -1,8 +1,9 @@
 import sqlite3
 import logging
-from utility_functions import error_handling, get_author, get_title, get_genre, return_formatted_output
+from utility_functions import error_handling, get_author, get_title, get_genre, return_formatted_output, create_filekey
+from pathlib import Path
 
-
+# Logging Setup:
 log_file = "app_log.log"
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s: %(message)s', 
@@ -17,22 +18,36 @@ conn = sqlite3.connect(":memory:")
 
 c = conn.cursor()
 
+"""
+## Database Table:
+id - good practice, assigns an integer to each item, increments
+title - title of book
+author - author of book
+genre - genre (category) of book
+date_added - time when book was added to db
+file_key - filename in server storage, never changed once added
+original_filename - user inputted filename, used for display and readability
+"""
 c.execute("""
 CREATE TABLE IF NOT EXISTS books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT UNIQUE NOT NULL,
     author TEXT,
     genre TEXT NOT NULL,
-    date_added INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+    date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
+    file_key TEXT NOT NULL UNIQUE,
+    original_filename TEXT NOT NULL
 )
 """)
 
 @error_handling
-def add_book(title: str, author: str, genre: str) -> None:
+def add_book(title: str, author: str, genre: str, filename: str) -> None:
+    file_key = create_filekey() # Creates file_key for server storage
     with conn:
-        c.execute("INSERT INTO books (title, author, genre) VALUES (?, ?, ?)", (title, author, genre))
+        c.execute("INSERT INTO books (title, author, genre, filename, file_key) VALUES (?, ?, ?)", 
+                  (title, author, genre, filename, file_key))
         print(f"{title} added.\n")
-        logger.info(f"Added Book: {title}")
+        logger.info(f"Added Book: {title}, file_key: {file_key}")
 
 @error_handling
 def delete_book(title: str) -> None:

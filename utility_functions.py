@@ -1,11 +1,12 @@
 import logging
 import sqlite3
+from datetime import datetime # for formatting time
+import time # for getting current time
+import secrets # for random hex characters
 
 logger = logging.getLogger(__name__)
 
-from datetime import datetime
-
-def error_handling(func) -> function: #error handling logic decorator
+def error_handling(func): #error handling logic decorator
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -15,6 +16,7 @@ def error_handling(func) -> function: #error handling logic decorator
             logger.error(f"Error occurred in {func.__name__}: {e}")
     return wrapper
 
+# Prompts User for Book Title:
 def get_title() -> str:
     title = input("Enter title of book: ").strip().lower()
     while not title:
@@ -23,6 +25,7 @@ def get_title() -> str:
 
     return title
 
+# Prompts User for Book Author:
 def get_author() -> str:
     author = input("Enter author of book: ").strip().lower()
     if not author: 
@@ -30,6 +33,7 @@ def get_author() -> str:
 
     return author
 
+# Prompts User for Book Genre:
 def get_genre() -> str:
     genre = input("Enter genre of book: ").strip().lower()
     while not genre:
@@ -38,7 +42,15 @@ def get_genre() -> str:
 
     return genre
 
+# Returns formatted output of book for terminal printing
 def return_formatted_output(title, author, genre, date_added) -> str:
     dt = datetime.fromtimestamp(date_added) # formatting time to datetime
     formatted_output = f"Book Title: {title.title()}\nBook Author: {author.title()}\nGenre: {genre.title()}\nDate Added: {dt.strftime('%Y-%m-%d')}"
     return formatted_output
+
+# returns unique filename for db storage
+def create_file_key() -> str:
+    current_time = int(time.time()) # obtains current time
+    rand = secrets.token_hex(2) # gets 4 random hex characters for guaranteed unique name
+    filename = f"book_{current_time}_{rand}.pdf"
+    return filename
