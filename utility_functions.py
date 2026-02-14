@@ -52,5 +52,5 @@ def return_formatted_output(title, author, genre, date_added) -> str:
 def create_file_key() -> str:
     current_time = int(time.time()) # obtains current time
     rand = secrets.token_hex(2) # gets 4 random hex characters for guaranteed unique name
-    filename = f"book_{current_time}_{rand}.pdf"
+    filename = f"book_{current_time}_{rand}.txt" # changed to .txt for testing
     return filename
