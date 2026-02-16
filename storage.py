@@ -33,19 +33,31 @@ def rename_file_key(old_file_key: str, new_file_key: str) -> Path:
        raise FileNotFoundError(old_path) 
     return old_path.rename(new_path)
 
-def write_file():
-    pass
+def get_directory(Directory) -> Path:
+    return Path(Directory).resolve()
 
-def open_file():
-    pass
+def write_file(file_key: str, input: str):
+    path = return_file_path(file_key)
+    with open(path, 'w') as f:
+        f.write(input)
+
+def read_file(file_key: str):
+    path = return_file_path(file_key)
+    with open(path, 'r') as f:
+        print(f.read())
 
 def file_search(file_key: str, directory: str):
     pass
 
 
-
 def main() -> None:
-    pass
+    file_key = create_book_file()
+    print(file_key)
+
+    # f = open('test.txt', 'r')
+    # print(f.read())
+    # print(f.name)
+    # f.close()
 
 if __name__ == "__main__":
     main()
