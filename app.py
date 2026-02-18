@@ -1,7 +1,9 @@
 import sqlite3
 import logging
-from utility_functions import error_handling, get_author, get_title, get_genre, return_formatted_output, create_filekey
+# package the code? <-- learn how to do this
+from utility_functions import *
 from pathlib import Path
+from storage import *
 
 # Logging Setup:
 log_file = "app_log.log"
@@ -42,7 +44,7 @@ CREATE TABLE IF NOT EXISTS books (
 
 @error_handling
 def add_book(title: str, author: str, genre: str, filename: str) -> None:
-    file_key = create_filekey() # Creates file_key for server storage
+    file_key = create_book_file() # Creates file and returns file_key for storage
     with conn:
         c.execute("INSERT INTO books (title, author, genre, filename, file_key) VALUES (?, ?, ?)", 
                   (title, author, genre, filename, file_key))
@@ -54,7 +56,7 @@ def delete_book(title: str) -> None:
     with conn:
         c.execute("DELETE FROM books WHERE title=(?)", (title,))
         print(f"{title} deleted.\n")
-        logger.info(f"Deleted Book: {title}")
+        logger.info(f"Deleted Book from db: {title}")
 
 @error_handling
 def update_book(title: str, column: str, value: str) -> None:
@@ -106,11 +108,47 @@ def display_all_books() -> list[str]:
             logger.info("No books found in database.")
 
 @error_handling
-def get_book(title: str) -> tuple[any]:
+def get_book(title: str) -> tuple[any] | None:
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
-        logger.info(f"Returned get_book() data: {title}")
-        return c.fetchone()
+        row = c.fetchone()
+        if not row:
+            logger.info(f"get_book(): {title} -> NOT FOUND")
+            return
+        
+        logger.info(f"Returned get_book(): {title}")
+        return row
+
+# Make general return function...
+def return_file_key(title: str) -> str | None:
+    with conn:
+        c.execute("SELECT file_key FROM books WHERE title=(?)", (title,))
+        row = c.fetchone()
+        if not row: # if it returns nothing, return none
+            logger.info(f"return_file_key: {title} -> NOT FOUND")
+            return None
+        
+        file_key = row[0] # since it returns a tuple, we must index it
+        logger.info(f"return_file_key: {title} -> {file_key}")
+        return file_key
+    
+def return_title(file_key: str) -> str:
+    with conn:
+        c.execute("SELECT title FROM books where file_key=(?)", (file_key,))
+        row = c.fetchone()
+        if not row: # if it returns nothing, return none
+            logger.info(f"return_title(): {file_key} -> NOT FOUND")
+            return None
+        
+        title = row[0] # since it returns a tuple, we must index it
+        logger.info(f"returned title from {file_key}: {title}")
+        return file_key
+
+@error_handling
+def full_delete(title: str) -> None:
+    file_key = return_file_key(title) # obtain file_key
+    delete_book(title) # delete from SQL db
+    delete_book_file(file_key) # delete filepath (now fully deleted)
 
 def terminal_menu():
     print("\n-====+ Library Database Menu +====-\n")

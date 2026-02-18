@@ -1,4 +1,6 @@
+__pycache__
 /venv
+/book_pdfs
 *.db
 *.log
-__pycache__
+*.txt

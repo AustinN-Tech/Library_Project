@@ -22,7 +22,6 @@ def get_title() -> str:
     while not title:
         print("Title cannot be empty. Enter a title.")
         title = input("\nEnter title of book: ").strip().lower()
-
     return title
 
 # Prompts User for Book Author:
@@ -30,7 +29,6 @@ def get_author() -> str:
     author = input("Enter author of book: ").strip().lower()
     if not author: 
         author = "unknown"
-
     return author
 
 # Prompts User for Book Genre:
@@ -39,7 +37,6 @@ def get_genre() -> str:
     while not genre:
         print("Genre cannot be empty. Enter a genre.")
         genre = input("\nEnter genre of book: ").strip().lower()
-
     return genre
 
 # Returns formatted output of book for terminal printing
