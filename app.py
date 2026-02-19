@@ -5,15 +5,7 @@ from utility_functions import *
 from pathlib import Path
 from storage import *
 
-# Logging Setup:
-log_file = "app_log.log"
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s: %(message)s', 
-    filename=log_file, 
-    filemode='w', 
-    level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-logger.debug(f"Logger initialized in app.py.")
+logger = initialize_logging() # setting logging
 
 
 conn = sqlite3.connect(":memory:")
@@ -64,6 +56,7 @@ def update_book(title: str, column: str, value: str) -> None:
         c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
         logger.info(f"Updated Book '{title}', updated {column} with new value of {value}")
 
+@error_handling
 def display_all_books() -> list[str]:
     with conn:
         c.execute("SELECT * FROM books")
@@ -94,6 +87,7 @@ def get_book(title: str) -> tuple[any] | None:
         return row
 
 # Make general return function...
+@error_handling
 def return_file_key(title: str) -> str | None:
     with conn:
         c.execute("SELECT file_key FROM books WHERE title=(?)", (title,))
@@ -105,7 +99,8 @@ def return_file_key(title: str) -> str | None:
         file_key = row[0] # since it returns a tuple, we must index it
         logger.info(f"return_file_key: {title} -> {file_key}")
         return file_key
-    
+
+@error_handling
 def return_title(file_key: str) -> str:
     with conn:
         c.execute("SELECT title FROM books where file_key=(?)", (file_key,))
