@@ -1,5 +1,4 @@
 import sqlite3
-import logging
 # package the code? <-- learn how to do this
 from utility_functions import *
 from pathlib import Path

@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from utility_functions import create_file_key, error_handling, initialize_logging
 
