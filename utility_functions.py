@@ -54,6 +54,37 @@ def get_genre() -> str:
         genre = input("\nEnter genre of book: ").strip().lower()
     return genre
 
+@error_handling
+def get_column() -> str:
+    column = input("Change Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ")
+    while column not in ["1" ,"2", "3"]:
+        print("Invalid Choice. Choose from (1-3)")
+        column = input("\nChange Data:\nTitle [1]\nAuthor[2]\nEnter Number: ")
+    print("\n")
+    if column == "1": 
+        column = "title"
+    elif column == "2":
+        column = "author"
+    else: 
+        column = "genre"
+    return column
+
+@error_handling
+def get_value() -> str:
+    value = input("Enter new value: ").strip().lower()
+    while not value:
+        print("Value cannot be empty. Enter a value.")
+        value = input("\nEnter new value: ").strip().lower()
+    return value
+
+@error_handling
+def get_OG_filename() -> str:
+    filename = input("Enter book filename: ").strip().lower()
+    while not filename:
+        print("Filename cannot be empty. Enter a filename.")
+        filename = input("\nEnter filename of book: ").strip().lower()
+    return filename
+
 # Returns formatted output of book for terminal printing
 @error_handling
 def return_formatted_output(title, author, genre, date_added) -> str:
@@ -66,5 +97,6 @@ def return_formatted_output(title, author, genre, date_added) -> str:
 def create_file_key() -> str:
     current_time = int(time.time()) # obtains current time
     rand = secrets.token_hex(2) # gets 4 random hex characters for guaranteed unique name
-    filename = f"book_{current_time}_{rand}.txt" # changed to .txt for testing
-    return filename
+    filekey = f"book_{current_time}_{rand}.txt" # changed to .txt for testing
+    logger.debug(f"Created file_key {filekey}")
+    return filekey

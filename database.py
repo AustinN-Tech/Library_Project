@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS books (
 def add_book(title: str, author: str, genre: str, filename: str) -> None:
     file_key = create_book_file() # Creates file and returns file_key for storage
     with conn:
-        c.execute("INSERT INTO books (title, author, genre, filename, file_key) VALUES (?, ?, ?)", 
+        c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
                   (title, author, genre, filename, file_key))
         print(f"{title} added.\n")
         logger.info(f"Added Book: {title}, file_key: {file_key}")
