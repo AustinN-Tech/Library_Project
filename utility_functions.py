@@ -56,10 +56,10 @@ def get_genre() -> str:
 
 @error_handling
 def get_column() -> str:
-    column = input("Change Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ")
+    column = input("Change Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
     while column not in ["1" ,"2", "3"]:
         print("Invalid Choice. Choose from (1-3)")
-        column = input("\nChange Data:\nTitle [1]\nAuthor[2]\nEnter Number: ")
+        column = input("\nChange Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
     print("\n")
     if column == "1": 
         column = "title"

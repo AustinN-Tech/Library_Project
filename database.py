@@ -1,13 +1,11 @@
 import sqlite3
 # package the code? <-- learn how to do this
 from utility_functions import *
-from pathlib import Path
 from storage import *
 
 logger = initialize_logging() # setting logging
 
-
-conn = sqlite3.connect(":memory:")
+conn = sqlite3.connect("library.db")
 
 c = conn.cursor()
 
@@ -21,6 +19,7 @@ date_added - time when book was added to db
 file_key - filename in server storage, never changed once added
 original_filename - user inputted filename, used for display and readability
 """
+
 c.execute("""
 CREATE TABLE IF NOT EXISTS books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +38,7 @@ def add_book(title: str, author: str, genre: str, filename: str) -> None:
     with conn:
         c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
                   (title, author, genre, filename, file_key))
-        print(f"{title} added.\n")
+        print(f"{title.title()} added.\n")
         logger.info(f"Added Book: {title}, file_key: {file_key}")
 
 @error_handling
@@ -50,23 +49,29 @@ def delete_book(title: str) -> None:
         logger.info(f"Deleted Book from db: {title}")
 
 @error_handling
+def delete_all_db() -> None:
+    with conn:
+        c.execute("DELETE FROM books")
+        logger.info(f"All rows deleted in library.db")
+
+@error_handling
 def update_book(title: str, column: str, value: str) -> None:
+    ALLOWED_COLUMNS = {"title", "author", "genre", "original_filename"}
+    if column not in ALLOWED_COLUMNS: # check if column input is valid
+        raise ValueError("Invalid column")
     with conn:
         c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
         logger.info(f"Updated Book '{title}', updated {column} with new value of {value}")
 
 @error_handling
-def display_all_books() -> list[str]:
+def display_all_books() -> list[str] | None:
     with conn:
         c.execute("SELECT * FROM books")
         results = c.fetchall()
-
         if results:
             data = [] # create empty list to store results
-
             for row in results:
                 data.append(return_formatted_output(row[1], row[2], row[3], row[4])) # append list with formatted data
-
             logger.info("Returned All Book Data")
             return data
         else:
@@ -81,7 +86,6 @@ def get_book(title: str) -> tuple[any] | None:
         if not row:
             logger.info(f"get_book(): {title} -> NOT FOUND")
             return
-        
         logger.info(f"Returned get_book(): {title}")
         return row
 
@@ -100,7 +104,7 @@ def return_file_key(title: str) -> str | None:
         return file_key
 
 @error_handling
-def return_title(file_key: str) -> str:
+def return_title(file_key: str) -> str | None:
     with conn:
         c.execute("SELECT title FROM books where file_key=(?)", (file_key,))
         row = c.fetchone()
@@ -110,7 +114,7 @@ def return_title(file_key: str) -> str:
         
         title = row[0] # since it returns a tuple, we must index it
         logger.info(f"returned title from {file_key}: {title}")
-        return file_key
+        return title
 
 @error_handling
 def full_delete(title: str) -> None:
@@ -123,6 +127,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-conn.commit()
-conn.close()
