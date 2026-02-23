@@ -1,4 +1,5 @@
 import database as db
+from storage import list_files, write_file, read_file
 from utility_functions import (
     get_title, get_author, get_genre, get_OG_filename, get_column, get_value,
     return_formatted_output
@@ -16,7 +17,7 @@ def terminal_delete_book():
     print("-== Delete a Book ==-")
     title = get_title()
     if db.get_book(title) is None:
-        print(f"No book found with name {title}")
+        print(f"No book found with name {title.title()}")
         return
     db.full_delete(title)
 
@@ -46,18 +47,35 @@ def terminal_print_all_books():
             print(i, "\n")
     else:
         return
-    
-def delete_all_books():
-    pass
 
-def list_book_files():
-    pass
+def terminal_delete_all_books():
+    print("-== Deleting All Books ==-\n")
+    db.delete_all_db()
 
-def book_write():
-    pass
+def terminal_list_book_files():
+    print("-== Listing All Files ==-\n")
+    list_files()
 
-def book_read():
-    pass
+def terminal_book_write():
+    print("-== Write into Book ==-\n")
+    title = get_title()
+    if db.get_book(title) is None:
+        print(f"No book with title: {title.title()} exists.")
+        return
+    file_key = db.return_file_key(title)
+    #content = get_content() # <-- need to make
+    #write_file(file_key, content)
+    print(f"Content written into {title.title()}.")
+
+def terminal_book_read():
+    print("-== Write into Book ==-\n")
+    title = get_title()
+    if db.get_book(title) is None:
+        print(f"No book with title: {title.title()} exists.")
+        return
+    file_key = db.return_file_key(title)
+    content = read_file(file_key)
+    print(content)
 
 def terminal_menu():
     while True:
@@ -81,7 +99,7 @@ def terminal_menu():
         else:
             print("Please enter a valid number.")
 
-def administrator_menu():
+def terminal_admin_menu():
     pass
 
 def main() -> None:

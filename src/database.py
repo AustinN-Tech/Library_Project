@@ -52,6 +52,7 @@ def delete_book(title: str) -> None:
 def delete_all_db() -> None:
     with conn:
         c.execute("DELETE FROM books")
+        print("All books deleted.")
         logger.info(f"All rows deleted in library.db")
 
 @error_handling
