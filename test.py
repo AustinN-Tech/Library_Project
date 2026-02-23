@@ -18,7 +18,7 @@ def terminal_delete_book():
     if db.get_book(title) is None:
         print(f"No book found with name {title}")
         return
-    db.delete_book(title)
+    db.full_delete(title)
 
 def terminal_update_book():
     title = get_title()
@@ -46,6 +46,18 @@ def terminal_print_all_books():
             print(i, "\n")
     else:
         return
+    
+def delete_all_books():
+    pass
+
+def list_book_files():
+    pass
+
+def book_write():
+    pass
+
+def book_read():
+    pass
 
 def terminal_menu():
     while True:
@@ -69,6 +81,8 @@ def terminal_menu():
         else:
             print("Please enter a valid number.")
 
+def administrator_menu():
+    pass
 
 def main() -> None:
     terminal_menu()
