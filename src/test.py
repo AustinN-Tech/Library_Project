@@ -7,11 +7,17 @@ from utility_functions import (
 
 def terminal_add_book():
     print("-== Add a new Book ==-")
+    # User Inputs:
     title = get_title()
     author = get_author()
     genre = get_genre()
+    content = get_content()
     filename = get_OG_filename()
+
     db.add_book(title, author, genre, filename)
+    # Write Content into File:
+    file_key = db.return_file_key(title)
+    write_file(file_key, content)
 
 def terminal_delete_book():
     print("-== Delete a Book ==-")
@@ -37,7 +43,7 @@ def terminal_search_book():
     if retrieved_book is None:
         print(f"No book found with title {title.title()}")
         return
-    print(print(return_formatted_output(retrieved_book[1], retrieved_book[2], retrieved_book[3], retrieved_book[4])))
+    print(return_formatted_output(retrieved_book[1], retrieved_book[2], retrieved_book[3], retrieved_book[4]))
 
 def terminal_print_all_books():
     print("-== All Books ==-\n")
@@ -75,14 +81,17 @@ def terminal_book_write():
     print(f"Content written into {title.title()}.")
 
 def terminal_book_read():
-    print("-== Write into Book ==-\n")
+    print("-== Read Book ==-\n")
     title = get_title()
     if db.get_book(title) is None:
         print(f"No book with title: {title.title()} exists.")
         return
     file_key = db.return_file_key(title)
     content = read_file(file_key)
-    print(content)
+    if not content:
+        print("Book is empty")
+        return
+    print(f"\n{content}")
 
 """Main Terminal Menu 
 Allows database access (add, delete, update, display, etc...) via terminal.
