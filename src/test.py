@@ -5,6 +5,13 @@ from utility_functions import (
     return_formatted_output
 )
 
+def terminal_get_title() -> str | None:
+    title = get_title()
+    if db.get_book(title) is None: # verifies title exists in db
+        print(f"No book found with title {title.title()}")
+        return
+    return title
+
 def terminal_add_book():
     print("-== Add a new Book ==-")
     # User Inputs:
@@ -19,33 +26,23 @@ def terminal_add_book():
     file_key = db.return_file_key(title)
     write_file(file_key, content)
 
-def terminal_delete_book():
+def terminal_delete_book() -> None:
     print("-== Delete a Book ==-")
-    title = get_title()
-    if db.get_book(title) is None:
-        print(f"No book found with name {title.title()}")
+    title = terminal_get_title()
+    if not title:
         return
     db.full_delete(title)
 
-def terminal_update_book():
-    title = get_title()
-    if db.get_book(title) is None:
-        print(f"No book with title: {title.title()} exists.")
-        return
+def terminal_update_book(title: str) -> None:
     column = get_column()
     value = get_value()
     db.update_book(title, column, value)
 
-def terminal_search_book():
-    print("-== Search for a Book ==-\n")
-    title = get_title()
+def print_book_info(title: str) -> None:
     retrieved_book = db.get_book(title)
-    if retrieved_book is None:
-        print(f"No book found with title {title.title()}")
-        return
     print(return_formatted_output(retrieved_book[1], retrieved_book[2], retrieved_book[3], retrieved_book[4]))
 
-def terminal_print_all_books():
+def terminal_print_all_books() -> None:
     print("-== All Books ==-\n")
     data = db.display_all_books()
     if data:
@@ -54,7 +51,7 @@ def terminal_print_all_books():
     else:
         return
 
-def terminal_delete_all_books():
+def terminal_delete_all_books() -> None:
     print("-== Deleting All Books ==-\n")
     answer = input("Are you sure you want to delete all books? [Y/N]: ").strip().lower()
     if answer == "Y":
@@ -69,29 +66,43 @@ def terminal_list_book_files():
     print("-== Listing All File Paths ==-\n")
     list_files()
 
-def terminal_book_write():
+def terminal_book_write(title: str) -> None:
     print("-== Write into Book ==-\n")
-    title = get_title()
-    if db.get_book(title) is None:
-        print(f"No book with title: {title.title()} exists.")
-        return
     file_key = db.return_file_key(title)
     content = get_content()
     write_file(file_key, content)
     print(f"Content written into {title.title()}.")
 
-def terminal_book_read():
+def terminal_book_read(title: str) -> None:
     print("-== Read Book ==-\n")
-    title = get_title()
-    if db.get_book(title) is None:
-        print(f"No book with title: {title.title()} exists.")
-        return
     file_key = db.return_file_key(title)
     content = read_file(file_key)
     if not content:
         print("Book is empty")
         return
     print(f"\n{content}")
+
+def terminal_select_book_menu():
+    print("-== Select a Book ==-\n")
+    title = terminal_get_title() # obtains title, verifies that it exists in db
+    if title is None:
+        return
+    while True:
+        print("\n")
+        print_book_info(title)
+        print(" Read [1]\n Write [2]\n Update[3]\n Back to Menu [0]")
+        result = input("Enter corresponding number: ").strip()
+        if result == "1":
+            terminal_book_read(title)
+        elif result == "2":
+            terminal_book_write(title)
+        elif result == "3":
+            terminal_update_book(title)
+        elif result == "0":
+            print("Back to Menu...\n")
+            break
+        else:
+            print("Please enter a valid number.")
 
 """Main Terminal Menu 
 Allows database access (add, delete, update, display, etc...) via terminal.
@@ -100,8 +111,7 @@ Primarily for debugging and testing.
 def terminal_menu():
     while True:
         print("\n-====+ Library Database Menu +====-\n")
-        print("Add Book [1]\nDelete Book [2]\nUpdate Book Information [3]\nSearch for Book [4]" \
-        "\nDisplay all Books [5]\nWrite in Book [6]\nRead Book [7]\nAdditional Functions [8]\nExit [0]")
+        print("  Add Book [1]\n  Delete Book [2]\n  Select Book [3]\n  Display all Books [4]\n  Additional Functions [5]\n  Exit [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
         if result == "1":
@@ -109,36 +119,34 @@ def terminal_menu():
         elif result == "2":
             terminal_delete_book()
         elif result == "3":
-            terminal_update_book()
+            terminal_select_book_menu()
         elif result == "4":
-            terminal_search_book()
-        elif result == "5":
             terminal_print_all_books()
-        elif result == "6":
-            terminal_book_write()
-        elif result == "7":
-            terminal_book_read()
-        elif result == "8":
+        elif result == "5":
             additional_menu()
         elif result == "0":
             print("Exiting...\n")
-            return False
+            break
         else:
             print("Please enter a valid number.")
 
 # Additional miscellaneous functions such as deleting all books and listing file paths
 def additional_menu():
-    print("\n-== More Functions ==-\n")
-    print("Delete All Books [1]\nList all Files [2]")
-    result = input("Enter corresponding number: ").strip()
-    print("\n")
-    if result == "1":
-        terminal_delete_all_books()
-    elif result == "2":
-        terminal_list_book_files()
-    else:
-        print("Invalid number.")
-        return
+    while True:
+        print("\n-== More Functions ==-\n")
+        print("  Delete All Books [1]\n  List all Files [2]\n  Back to Menu [0]")
+        result = input("Enter corresponding number: ").strip()
+        print("\n")
+        if result == "1":
+            terminal_delete_all_books()
+        elif result == "2":
+            terminal_list_book_files()
+        elif result == "0":
+            print("Back to Menu...\n")
+            break
+        else:
+            print("Invalid number.")
+            return
 
 def main() -> None:
     terminal_menu()
