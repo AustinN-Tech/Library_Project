@@ -50,10 +50,17 @@ def terminal_print_all_books():
 
 def terminal_delete_all_books():
     print("-== Deleting All Books ==-\n")
-    db.delete_all_db()
+    answer = input("Are you sure you want to delete all books? [Y/N]: ").strip().lower()
+    if answer == "Y":
+        db.delete_all_db()
+    elif answer == "N":
+        print("Books will not be deleted...\n")
+        return
+    else:
+        print("Invalid Input")
 
 def terminal_list_book_files():
-    print("-== Listing All Files ==-\n")
+    print("-== Listing All File Paths ==-\n")
     list_files()
 
 def terminal_book_write():
@@ -77,11 +84,15 @@ def terminal_book_read():
     content = read_file(file_key)
     print(content)
 
+"""Main Terminal Menu 
+Allows database access (add, delete, update, display, etc...) via terminal.
+Primarily for debugging and testing.
+"""
 def terminal_menu():
     while True:
         print("\n-====+ Library Database Menu +====-\n")
         print("Add Book [1]\nDelete Book [2]\nUpdate Book Information [3]\nSearch for Book [4]" \
-        "\nDisplay all Books [5]\nWrite in Book[6]\nRead Book[7]\nExit [0]")
+        "\nDisplay all Books [5]\nWrite in Book [6]\nRead Book [7]\nAdditional Functions [8]\nExit [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
         if result == "1":
@@ -98,13 +109,27 @@ def terminal_menu():
             terminal_book_write()
         elif result == "7":
             terminal_book_read()
+        elif result == "8":
+            additional_menu()
         elif result == "0":
             print("Exiting...\n")
             return False
         else:
             print("Please enter a valid number.")
 
-
+# Additional miscellaneous functions such as deleting all books and listing file paths
+def additional_menu():
+    print("\n-== More Functions ==-\n")
+    print("Delete All Books [1]\nList all Files [2]")
+    result = input("Enter corresponding number: ").strip()
+    print("\n")
+    if result == "1":
+        terminal_delete_all_books()
+    elif result == "2":
+        terminal_list_book_files()
+    else:
+        print("Invalid number.")
+        return
 
 def main() -> None:
     terminal_menu()
