@@ -29,6 +29,7 @@ def create_book_file() -> str:
     logger.debug(f"File {file_key} created at {path}")
     return file_key
 
+@error_handling
 def delete_book_file(file_key: str) -> None:
     path = return_file_path(file_key)
     if path.exists():

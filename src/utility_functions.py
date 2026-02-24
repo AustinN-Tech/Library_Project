@@ -85,6 +85,10 @@ def get_OG_filename() -> str:
         filename = input("\nEnter filename of book: ").strip().lower()
     return filename
 
+def get_content() -> str:
+    content = input("Enter content of book: ").strip()
+    return content
+
 # Returns formatted output of book for terminal printing
 @error_handling
 def return_formatted_output(title, author, genre, date_added) -> str:

@@ -1,7 +1,7 @@
 import database as db
 from storage import list_files, write_file, read_file
 from utility_functions import (
-    get_title, get_author, get_genre, get_OG_filename, get_column, get_value,
+    get_title, get_author, get_genre, get_OG_filename, get_column, get_value, get_content,
     return_formatted_output
 )
 
@@ -63,8 +63,8 @@ def terminal_book_write():
         print(f"No book with title: {title.title()} exists.")
         return
     file_key = db.return_file_key(title)
-    #content = get_content() # <-- need to make
-    #write_file(file_key, content)
+    content = get_content()
+    write_file(file_key, content)
     print(f"Content written into {title.title()}.")
 
 def terminal_book_read():
@@ -80,7 +80,8 @@ def terminal_book_read():
 def terminal_menu():
     while True:
         print("\n-====+ Library Database Menu +====-\n")
-        print("Add Book [1]\nDelete Book [2]\nUpdate Book [3]\nSearch for Book [4]\nDisplay all Books [5]\nExit [0]")
+        print("Add Book [1]\nDelete Book [2]\nUpdate Book Information [3]\nSearch for Book [4]" \
+        "\nDisplay all Books [5]\nWrite in Book[6]\nRead Book[7]\nExit [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
         if result == "1":
@@ -93,14 +94,17 @@ def terminal_menu():
             terminal_search_book()
         elif result == "5":
             terminal_print_all_books()
+        elif result == "6":
+            terminal_book_write()
+        elif result == "7":
+            terminal_book_read()
         elif result == "0":
             print("Exiting...\n")
             return False
         else:
             print("Please enter a valid number.")
 
-def terminal_admin_menu():
-    pass
+
 
 def main() -> None:
     terminal_menu()
