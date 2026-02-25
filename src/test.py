@@ -12,6 +12,27 @@ def terminal_get_title() -> str | None:
         return
     return title
 
+def terminal_partial_search() -> list[tuple] | None:
+    title = get_title()
+    search_results = db.partial_search(title)
+    if not search_results:
+        print(f"No book found with characters: {title}")
+        return
+    else:
+        return search_results
+    
+def terminal_display_partial_search(search_results: list[tuple]) -> str | None:
+    book_list = {}
+    for row, i in enumerate(search_results):
+        print(f"{row[1]} [{i+1}]\n")
+        book_list[f"{i+1}"] = row[1]
+    result = input("Enter Corresponding Number: ").strip()
+    title = book_list[result]
+    if not title:
+        print("No book found with such characters")
+        return
+    return title
+
 def terminal_add_book():
     print("-== Add a new Book ==-")
     # User Inputs:

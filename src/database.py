@@ -91,6 +91,19 @@ def get_book(title: str) -> tuple[any] | None:
         logger.info(f"Returned get_book(): {title}")
         return row
 
+# Searches using incomplete inputs (ie: title entered "Tale of" returns book titled "Tale of the Turtle")
+@error_handling
+def partial_search(title: str) -> tuple[any] | None:
+        search = f"%{title}%" # format user input with % wildcard
+        with conn:
+            c.execute("SELECT * FROM books WHERE title LIKE ?", (search,))
+            results = c.fetchall()
+            if not results:
+                logger.info(f"partial_search(): {search} -> NOT FOUND")
+                return
+            logger.info(f"Returned partial_search(): {search}")
+            return results
+
 # Make general return function...
 @error_handling
 def return_file_key(title: str) -> str | None:
@@ -125,7 +138,8 @@ def full_delete(title: str) -> None:
     delete_book(title) # delete from SQL db
 
 def main() -> None:
-    pass
+    book = partial_search("Tale of the Turtle")
+    print(book)
 
 if __name__ == "__main__":
     main()
