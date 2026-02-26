@@ -20,16 +20,24 @@ def terminal_partial_search() -> list[tuple] | None:
         return
     else:
         return search_results
-    
+
 def terminal_display_partial_search(search_results: list[tuple]) -> str | None:
-    book_list = {}
-    for row, i in enumerate(search_results):
-        print(f"{row[1]} [{i+1}]\n")
-        book_list[f"{i+1}"] = row[1]
-    result = input("Enter Corresponding Number: ").strip()
-    title = book_list[result]
+    print("\n-== Matching Titles ==-")
+    book_list = {} # for mapping titles to indexes
+    for i, row in enumerate(search_results):
+        print(f" {row[1].title()} [{i+1}]")
+        book_list[i+1] = row[1]
+    result = input("Enter Corresponding Number (0 to cancel): ").strip()
+    if result == "0": # exit condition
+        return
+
+    if not result.isdigit(): # Checking if number was inputted
+        print("Invalid input.")
+        return
+
+    title = book_list.get(int(result)) # using .get() so it doesn't crash if not found
     if not title:
-        print("No book found with such characters")
+        print("Invalid Selection")
         return
     return title
 
@@ -105,9 +113,9 @@ def terminal_book_read(title: str) -> None:
 
 def terminal_select_book_menu():
     print("-== Select a Book ==-\n")
-    title = terminal_get_title() # obtains title, verifies that it exists in db
+    title = terminal_display_partial_search(terminal_partial_search()) # obtains title, verifies that it exists in db
     if title is None:
-        return
+         return
     while True:
         print("\n")
         print_book_info(title)
