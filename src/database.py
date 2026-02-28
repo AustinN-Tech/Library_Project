@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS books (
 
 @error_handling
 def add_book(title: str, author: str, genre: str, filename: str) -> None:
-    file_key = create_book_file() # Creates file and returns file_key for storage
+    file_key = create_txt_file() # Creates file and returns file_key for storage
     with conn:
         c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
                   (title, author, genre, filename, file_key))
@@ -138,8 +138,7 @@ def full_delete(title: str) -> None:
     delete_book(title) # delete from SQL db
 
 def main() -> None:
-    book = partial_search("Tale of the Turtle")
-    print(book)
+    pass
 
 if __name__ == "__main__":
     main()

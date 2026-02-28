@@ -98,9 +98,12 @@ def return_formatted_output(title, author, genre, date_added) -> str:
 
 # returns unique filename for db storage
 @error_handling
-def create_file_key() -> str:
+def create_file_key(file_type: str) -> str:
+    if file_type not in ["pdf", "txt"]:
+        logger.debug(f"Incorrect Filetype: {file_type} passed in create_file_key()")
+        return
     current_time = int(time.time()) # obtains current time
     rand = secrets.token_hex(2) # gets 4 random hex characters for guaranteed unique name
-    filekey = f"book_{current_time}_{rand}.txt" # changed to .txt for testing
+    filekey = f"book_{current_time}_{rand}.{file_type}"
     logger.debug(f"Created file_key {filekey}")
     return filekey

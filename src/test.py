@@ -1,5 +1,5 @@
 import database as db
-from storage import list_files, write_file, read_file
+from storage import list_files, write_txt_file, read_txt_file
 from utility_functions import (
     get_title, get_author, get_genre, get_OG_filename, get_column, get_value, get_content,
     return_formatted_output
@@ -53,7 +53,7 @@ def terminal_add_book():
     db.add_book(title, author, genre, filename)
     # Write Content into File:
     file_key = db.return_file_key(title)
-    write_file(file_key, content)
+    write_txt_file(file_key, content)
 
 def terminal_delete_book() -> None:
     print("-== Delete a Book ==-")
@@ -83,9 +83,9 @@ def terminal_print_all_books() -> None:
 def terminal_delete_all_books() -> None:
     print("-== Deleting All Books ==-\n")
     answer = input("Are you sure you want to delete all books? [Y/N]: ").strip().lower()
-    if answer == "Y":
+    if answer == "y":
         db.delete_all_db()
-    elif answer == "N":
+    elif answer == "n":
         print("Books will not be deleted...\n")
         return
     else:
@@ -99,13 +99,13 @@ def terminal_book_write(title: str) -> None:
     print("-== Write into Book ==-\n")
     file_key = db.return_file_key(title)
     content = get_content()
-    write_file(file_key, content)
+    write_txt_file(file_key, content)
     print(f"Content written into {title.title()}.")
 
 def terminal_book_read(title: str) -> None:
     print("-== Read Book ==-\n")
     file_key = db.return_file_key(title)
-    content = read_file(file_key)
+    content = read_txt_file(file_key)
     if not content:
         print("Book is empty")
         return
@@ -119,7 +119,7 @@ def terminal_select_book_menu():
     while True:
         print("\n")
         print_book_info(title)
-        print(" Read [1]\n Write [2]\n Update[3]\n Back to Menu [0]")
+        print(" Read [1]\n Write [2]\n Update [3]\n Back to Menu [0]")
         result = input("Enter corresponding number: ").strip()
         if result == "1":
             terminal_book_read(title)
