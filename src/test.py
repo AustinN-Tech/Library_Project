@@ -1,8 +1,8 @@
 import database as db
-from storage import list_files, write_txt_file, read_txt_file
+from storage import list_files, write_txt_file, read_txt_file, open_pdf, create_book_pdf
 from utility_functions import (
     get_title, get_author, get_genre, get_OG_filename, get_column, get_value, get_content,
-    return_formatted_output
+    return_formatted_output, get_path
 )
 
 def terminal_get_title() -> str | None:
@@ -47,13 +47,10 @@ def terminal_add_book():
     title = get_title()
     author = get_author()
     genre = get_genre()
-    content = get_content()
     filename = get_OG_filename()
+    path = get_path()
 
-    db.add_book(title, author, genre, filename)
-    # Write Content into File:
-    file_key = db.return_file_key(title)
-    write_txt_file(file_key, content)
+    db.add_book(title, author, genre, filename, path)
 
 def terminal_delete_book() -> None:
     print("-== Delete a Book ==-")
@@ -84,7 +81,7 @@ def terminal_delete_all_books() -> None:
     print("-== Deleting All Books ==-\n")
     answer = input("Are you sure you want to delete all books? [Y/N]: ").strip().lower()
     if answer == "y":
-        db.delete_all_db()
+        db.full_delete_all_db()
     elif answer == "n":
         print("Books will not be deleted...\n")
         return
@@ -95,21 +92,10 @@ def terminal_list_book_files():
     print("-== Listing All File Paths ==-\n")
     list_files()
 
-def terminal_book_write(title: str) -> None:
-    print("-== Write into Book ==-\n")
+def terminal_PDF_open(title: str) -> str:
+    print("-== Opening File ==-\n")
     file_key = db.return_file_key(title)
-    content = get_content()
-    write_txt_file(file_key, content)
-    print(f"Content written into {title.title()}.")
-
-def terminal_book_read(title: str) -> None:
-    print("-== Read Book ==-\n")
-    file_key = db.return_file_key(title)
-    content = read_txt_file(file_key)
-    if not content:
-        print("Book is empty")
-        return
-    print(f"\n{content}")
+    open_pdf(file_key)
 
 def terminal_select_book_menu():
     print("-== Select a Book ==-\n")
@@ -119,13 +105,11 @@ def terminal_select_book_menu():
     while True:
         print("\n")
         print_book_info(title)
-        print(" Read [1]\n Write [2]\n Update [3]\n Back to Menu [0]")
+        print(" Open [1]\n Update [2]\nBack to Menu [0]")
         result = input("Enter corresponding number: ").strip()
         if result == "1":
-            terminal_book_read(title)
-        elif result == "2":
-            terminal_book_write(title)
-        elif result == "3":
+            terminal_PDF_open(title)
+        elif result =="2":
             terminal_update_book(title)
         elif result == "0":
             print("Back to Menu...\n")

@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS books (
 """)
 
 @error_handling
-def add_book(title: str, author: str, genre: str, filename: str) -> None:
-    file_key = create_txt_file() # Creates file and returns file_key for storage
+def add_book(title: str, author: str, genre: str, filename: str, path: Path) -> None:
+    file_key = create_book_pdf(path) # Creates file and returns file_key for storage
     with conn:
         c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
                   (title, author, genre, filename, file_key))
@@ -54,6 +54,20 @@ def delete_all_db() -> None:
         c.execute("DELETE FROM books")
         print("All books deleted.")
         logger.info(f"All rows deleted in library.db")
+
+@error_handling
+def full_delete_all_db() -> None:
+    with conn:
+        c.execute("SELECT * FROM books")
+        results = c.fetchall()
+        if results:
+            for row in results:
+                full_delete(title=row[1])
+            print("All books fully deleted.")
+            logger.info(f"All book files and rows in db deleted from library.")
+        else:
+            print("No books found.")
+            logger.info("No books found in database.")
 
 @error_handling
 def update_book(title: str, column: str, value: str) -> None:

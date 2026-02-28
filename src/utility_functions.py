@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 from datetime import datetime # for formatting time
+from pathlib import Path
 import time # for getting current time
 import secrets # for random hex characters
 
@@ -84,6 +85,16 @@ def get_OG_filename() -> str:
         print("Filename cannot be empty. Enter a filename.")
         filename = input("\nEnter filename of book: ").strip().lower()
     return filename
+
+@error_handling
+def get_path() -> Path:
+    path = input("Enter book path: ").strip().lower()
+    while not path:
+        print("Book path cannot be empty. Enter a path.")
+        path = input("\nEnter path of book: ").strip().lower()
+    path = path.strip().strip('"').strip("'")
+    path = Path(path).expanduser() # converts to path datatype
+    return path
 
 def get_content() -> str:
     content = input("Enter content of book: ").strip()
