@@ -1,7 +1,7 @@
 import database as db
-from storage import list_files, write_txt_file, read_txt_file, open_pdf, create_book_pdf
+from storage import list_files, open_pdf
 from utility_functions import (
-    get_title, get_author, get_genre, get_OG_filename, get_column, get_value, get_content,
+    get_title, get_author, get_genre, get_OG_filename, get_column, get_value,
     return_formatted_output, get_path
 )
 
@@ -24,9 +24,9 @@ def terminal_partial_search() -> list[tuple] | None:
 def terminal_display_partial_search(search_results: list[tuple]) -> str | None:
     print("\n-== Matching Titles ==-")
     book_list = {} # for mapping titles to indexes
-    for i, row in enumerate(search_results):
-        print(f" {row[1].title()} [{i+1}]")
-        book_list[i+1] = row[1]
+    for i, row in enumerate(search_results, start=1):
+        print(f" {row[1].title()} [{i}]")
+        book_list[i] = row[1]
     result = input("Enter Corresponding Number (0 to cancel): ").strip()
     if result == "0": # exit condition
         return

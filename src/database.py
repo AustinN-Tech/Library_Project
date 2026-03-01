@@ -118,6 +118,29 @@ def partial_search(title: str) -> tuple[any] | None:
             logger.info(f"Returned partial_search(): {search}")
             return results
 
+@error_handling   
+def filter(column: str, value: str | None, order: str) -> list[str]:
+    data = [] # create empty list to store results
+
+    column = validate_column(column)
+    order = validate_order(order)
+    if not column or not order: # if column or order invalid, return
+        return data # returns empty data
+
+    if value is not None and value != "":
+        query = f"SELECT * FROM books WHERE {column}=(?) ORDER BY {column} {order}"
+        params = (value,)
+        c.execute(query, params)
+    else: # if not filtered by direct value
+        query = (f"SELECT * FROM books ORDER BY {column} {order}")
+        c.execute(query)
+
+    results = c.fetchall()
+    for row in results:
+        data.append(return_formatted_output(row[1], row[2], row[3], row[4])) # append list with formatted data
+    logger.info("Returned filtered data")
+    return data
+
 # Make general return function...
 @error_handling
 def return_file_key(title: str) -> str | None:

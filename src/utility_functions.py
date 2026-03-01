@@ -5,6 +5,10 @@ from pathlib import Path
 import time # for getting current time
 import secrets # for random hex characters
 
+genres = ["Fiction", "Non-Fiction", "Fantasy", "Mystery / Thriller", "Sci-Fi",
+                 "Historical", "Biography", "Historical", "Science & Technology"]
+
+allowed_columns = {"title": "title","genre": "genre","date_added": "date_added",}
 
 def initialize_logging():
     log_file = "app_log.log"
@@ -49,11 +53,16 @@ def get_author() -> str:
 # Prompts User for Book Genre:
 @error_handling
 def get_genre() -> str:
-    genre = input("Enter genre of book: ").strip().lower()
-    while not genre:
-        print("Genre cannot be empty. Enter a genre.")
-        genre = input("\nEnter genre of book: ").strip().lower()
-    return genre
+    print("Select Genre of Book")
+    for i, genre in enumerate(genres, start=1):
+        print(f" {genre}: [{i}]")
+
+    result = input("Enter Corresponding Number: ").strip()
+    while (not result.isdigit()) or (not (1 <= int(result) <= len(genres))):
+        print("Invalid Selection. Select a valid genre number.")
+        result = input("Enter Corresponding Number: ").strip()
+    
+    return genres[int(result)-1]
 
 @error_handling
 def get_column() -> str:
@@ -100,6 +109,21 @@ def get_content() -> str:
     content = input("Enter content of book: ").strip()
     return content
 
+def validate_column(column: str) -> str | None:
+    if column.strip().lower() not in allowed_columns:
+        logger.debug(f"Incorrect column input {column}")
+        return None
+    return allowed_columns[column.strip().lower()]
+
+def validate_order(order: str) -> str | None:
+    order = order.strip().lower()
+    if order in ("asc", "ascending"):
+        return "ASC"
+    elif order in ("desc", "descending"):
+        return "DESC"
+    logger.debug(f"Invalid order type: {order}")
+    return None
+
 # Returns formatted output of book for terminal printing
 @error_handling
 def return_formatted_output(title, author, genre, date_added) -> str:
@@ -118,3 +142,9 @@ def create_file_key(file_type: str) -> str:
     filekey = f"book_{current_time}_{rand}.{file_type}"
     logger.debug(f"Created file_key {filekey}")
     return filekey
+
+def main() -> None:
+    pass
+
+if __name__ == "__main__":
+    main()
