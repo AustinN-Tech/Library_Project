@@ -8,7 +8,7 @@ import secrets # for random hex characters
 genres = ["Fiction", "Non-Fiction", "Fantasy", "Mystery / Thriller", "Sci-Fi",
                  "Historical", "Biography", "Historical", "Science & Technology"]
 
-allowed_columns = {"title": "title","genre": "genre","date_added": "date_added",}
+allowed_columns = {"title": "title","author":"author","genre": "genre","date_added": "date_added",}
 
 def initialize_logging():
     log_file = "app_log.log"
@@ -67,10 +67,10 @@ def get_order() -> str:
 
 # in progress
 def get_column() -> str:
-    column = input("Sort by:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
+    column = input("Sort by:\nTitle [1]\nAuthor [2]\nGenre [3]\nEnter Number: ").strip()
     while column not in ["1" ,"2", "3"]:
         print("Invalid Choice. Choose from (1-3)")
-        column = input("\nSort by:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
+        column = input("\nSort by:\nTitle [1]\nAuthor [2]\nGenre [3]\nEnter Number: ").strip()
     print("\n")
     if column == "1": 
         column = "title"

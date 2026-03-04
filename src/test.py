@@ -9,7 +9,7 @@ def terminal_get_title() -> str | None:
     title = get_title()
     if db.get_book(title) is None: # verifies title exists in db
         print(f"No book found with title {title.title()}")
-        return
+        return None
     return title
 
 def terminal_partial_search() -> list[tuple] | None:
@@ -17,7 +17,7 @@ def terminal_partial_search() -> list[tuple] | None:
     search_results = db.partial_search(title)
     if not search_results:
         print(f"No book found with characters: {title}")
-        return
+        return None
     else:
         return search_results
 
@@ -28,19 +28,19 @@ def terminal_display_results(search_results: list[tuple]) -> str | None:
         book_list[i] = row[1]
     result = input("Enter Corresponding Number (0 to cancel): ").strip()
     if result == "0": # exit condition
-        return
+        return None
 
     if not result.isdigit(): # Checking if number was inputted
         print("Invalid input.")
-        return
+        return None
 
     title = book_list.get(int(result)) # using .get() so it doesn't crash if not found
     if not title:
         print("Invalid Selection")
-        return
+        return None
     return title
 
-def terminal_add_book():
+def terminal_add_book() -> None:
     print("-== Add a new Book ==-")
     # User Inputs:
     title = get_title()
@@ -87,11 +87,11 @@ def terminal_delete_all_books() -> None:
     else:
         print("Invalid Input")
 
-def terminal_list_book_files():
+def terminal_list_book_files() -> None:
     print("-== Listing All File Paths ==-\n")
     list_files()
 
-def terminal_PDF_open(title: str) -> str:
+def terminal_PDF_open(title: str) -> None:
     print("-== Opening File ==-\n")
     file_key = db.return_file_key(title)
     open_pdf(file_key)
@@ -112,7 +112,8 @@ def terminal_book_select_actions(title: str) -> None:
         else:
             print("Please enter a valid number.")
 
-def terminal_select_book_menu():
+# function to connect terminal display + book functions for selecting books
+def terminal_select_book_menu() -> None:
     print("-== Select a Book ==-\n")
     search_results = terminal_partial_search()
     if not search_results:
@@ -123,8 +124,8 @@ def terminal_select_book_menu():
          return
     terminal_book_select_actions(title)
 
-# in progress
-def terminal_filter_menu():
+# function to connect terminal display + book functions for filtering books
+def terminal_filter_menu() -> None:
     print("-=== Filter ==-")
     search_results = terminal_filter()
     if not search_results:
@@ -134,11 +135,15 @@ def terminal_filter_menu():
          return
     terminal_book_select_actions(title)
 
-# in progress
-def terminal_filter():
+# Obtains users input, returns resulting search results
+def terminal_filter() -> None:
+    # Obtains users inputs
     column = get_column()
-    value = get_value()
+    if column == "genre":
+        value = get_genre()
+    else: value = get_value()
     order = get_order()
+    # Gets and returns search
     search_results = db.filter(column, value, order)
     if not search_results:
         print(f"No books found with specified filter")
