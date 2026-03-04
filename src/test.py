@@ -1,8 +1,8 @@
 import database as db
 from storage import list_files, open_pdf
 from utility_functions import (
-    get_title, get_author, get_genre, get_OG_filename, get_column, get_value,
-    return_formatted_output, get_path
+    get_title, get_author, get_genre, get_OG_filename, get_update_column, get_update_value,
+    return_formatted_output, get_path, get_column, get_value, get_order
 )
 
 def terminal_get_title() -> str | None:
@@ -21,8 +21,7 @@ def terminal_partial_search() -> list[tuple] | None:
     else:
         return search_results
 
-def terminal_display_partial_search(search_results: list[tuple]) -> str | None:
-    print("\n-== Matching Titles ==-")
+def terminal_display_results(search_results: list[tuple]) -> str | None:
     book_list = {} # for mapping titles to indexes
     for i, row in enumerate(search_results, start=1):
         print(f" {row[1].title()} [{i}]")
@@ -60,8 +59,8 @@ def terminal_delete_book() -> None:
     db.full_delete(title)
 
 def terminal_update_book(title: str) -> None:
-    column = get_column()
-    value = get_value()
+    column = get_update_column()
+    value = get_update_value()
     db.update_book(title, column, value)
 
 def print_book_info(title: str) -> None:
@@ -97,11 +96,7 @@ def terminal_PDF_open(title: str) -> str:
     file_key = db.return_file_key(title)
     open_pdf(file_key)
 
-def terminal_select_book_menu():
-    print("-== Select a Book ==-\n")
-    title = terminal_display_partial_search(terminal_partial_search()) # obtains title, verifies that it exists in db
-    if title is None:
-         return
+def terminal_book_select_actions(title: str) -> None:
     while True:
         print("\n")
         print_book_info(title)
@@ -117,6 +112,39 @@ def terminal_select_book_menu():
         else:
             print("Please enter a valid number.")
 
+def terminal_select_book_menu():
+    print("-== Select a Book ==-\n")
+    search_results = terminal_partial_search()
+    if not search_results:
+        return
+    print("\n-== Matching Titles ==-")
+    title = terminal_display_results(search_results) # obtains title, verifies that it exists in db
+    if title is None:
+         return
+    terminal_book_select_actions(title)
+
+# in progress
+def terminal_filter_menu():
+    print("-=== Filter ==-")
+    search_results = terminal_filter()
+    if not search_results:
+        return
+    title = terminal_display_results(search_results)
+    if title is None:
+         return
+    terminal_book_select_actions(title)
+
+# in progress
+def terminal_filter():
+    column = get_column()
+    value = get_value()
+    order = get_order()
+    search_results = db.filter(column, value, order)
+    if not search_results:
+        print(f"No books found with specified filter")
+        return
+    return search_results
+
 """Main Terminal Menu 
 Allows database access (add, delete, update, display, etc...) via terminal.
 Primarily for debugging and testing.
@@ -124,7 +152,7 @@ Primarily for debugging and testing.
 def terminal_menu():
     while True:
         print("\n-====+ Library Database Menu +====-\n")
-        print("  Add Book [1]\n  Delete Book [2]\n  Select Book [3]\n  Display all Books [4]\n  Additional Functions [5]\n  Exit [0]")
+        print("  Add Book [1]\n  Delete Book [2]\n  Select Book [3]\n  Display all Books [4]\n  Filter Books [5]\n  Additional Functions [6]\n  Exit [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
         if result == "1":
@@ -136,6 +164,8 @@ def terminal_menu():
         elif result == "4":
             terminal_print_all_books()
         elif result == "5":
+            terminal_filter_menu()
+        elif result == "6":
             additional_menu()
         elif result == "0":
             print("Exiting...\n")

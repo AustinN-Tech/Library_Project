@@ -50,6 +50,36 @@ def get_author() -> str:
         author = "unknown"
     return author
 
+# in progress
+def get_value() -> str:
+    value = input("Enter value: ").strip().lower()
+    return value
+
+# done
+def get_order() -> str:
+    orders = {"1": "ASC", "2": "DESC"}
+    print("Select Order\nAscending [1]\nDescending [2]")
+    idx = input("Enter corresponding number: ").strip()
+    while idx not in orders:
+        print("Invalid Selection. Select a valid number.")
+        idx = input("Enter Corresponding Number: ").strip()
+    return orders[idx]
+
+# in progress
+def get_column() -> str:
+    column = input("Sort by:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
+    while column not in ["1" ,"2", "3"]:
+        print("Invalid Choice. Choose from (1-3)")
+        column = input("\nSort by:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
+    print("\n")
+    if column == "1": 
+        column = "title"
+    elif column == "2":
+        column = "author"
+    else: 
+        column = "genre"
+    return column
+
 # Prompts User for Book Genre:
 @error_handling
 def get_genre() -> str:
@@ -65,7 +95,7 @@ def get_genre() -> str:
     return genres[int(result)-1]
 
 @error_handling
-def get_column() -> str:
+def get_update_column() -> str:
     column = input("Change Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
     while column not in ["1" ,"2", "3"]:
         print("Invalid Choice. Choose from (1-3)")
@@ -80,7 +110,7 @@ def get_column() -> str:
     return column
 
 @error_handling
-def get_value() -> str:
+def get_update_value() -> str:
     value = input("Enter new value: ").strip().lower()
     while not value:
         print("Value cannot be empty. Enter a value.")
@@ -109,12 +139,14 @@ def get_content() -> str:
     content = input("Enter content of book: ").strip()
     return content
 
+@error_handling
 def validate_column(column: str) -> str | None:
-    if column.strip().lower() not in allowed_columns:
+    if column.strip().lower() not in allowed_columns: # validating column
         logger.debug(f"Incorrect column input {column}")
         return None
-    return allowed_columns[column.strip().lower()]
+    return allowed_columns[column.strip().lower()] # obtaining columns from safe dictionary
 
+@error_handling
 def validate_order(order: str) -> str | None:
     order = order.strip().lower()
     if order in ("asc", "ascending"):

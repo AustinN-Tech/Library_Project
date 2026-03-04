@@ -128,7 +128,7 @@ def filter(column: str, value: str | None, order: str) -> list[str]:
         return data # returns empty data
 
     if value is not None and value != "":
-        query = f"SELECT * FROM books WHERE {column}=(?) ORDER BY {column} {order}"
+        query = f"SELECT * FROM books WHERE {column} LIKE (?) ORDER BY {column} {order}"
         params = (value,)
         c.execute(query, params)
     else: # if not filtered by direct value
@@ -137,7 +137,7 @@ def filter(column: str, value: str | None, order: str) -> list[str]:
 
     results = c.fetchall()
     for row in results:
-        data.append(return_formatted_output(row[1], row[2], row[3], row[4])) # append list with formatted data
+        data.append(row) # append list with formatted data
     logger.info("Returned filtered data")
     return data
 
