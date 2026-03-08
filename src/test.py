@@ -155,46 +155,38 @@ Allows database access (add, delete, update, display, etc...) via terminal.
 Primarily for debugging and testing.
 """
 def terminal_menu():
+    actions = {"1": terminal_add_book, "2": terminal_delete_book, "3": terminal_select_book_menu,
+                "4": terminal_print_all_books, "5": terminal_filter_menu, "6": additional_menu}
     while True:
         print("\n-====+ Library Database Menu +====-\n")
         print("  Add Book [1]\n  Delete Book [2]\n  Select Book [3]\n  Display all Books [4]\n  Filter Books [5]\n  Additional Functions [6]\n  Exit [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
-        if result == "1":
-            terminal_add_book()
-        elif result == "2":
-            terminal_delete_book()
-        elif result == "3":
-            terminal_select_book_menu()
-        elif result == "4":
-            terminal_print_all_books()
-        elif result == "5":
-            terminal_filter_menu()
-        elif result == "6":
-            additional_menu()
-        elif result == "0":
-            print("Exiting...\n")
+        if result == "0":
+            print("Exiting...")
             break
-        else:
+        func = actions.get(result)
+        if func is None:
             print("Please enter a valid number.")
+            continue
+        func()
 
 # Additional miscellaneous functions such as deleting all books and listing file paths
 def additional_menu():
+    actions = {"1": terminal_delete_all_books, "2": terminal_list_book_files}
     while True:
         print("\n-== More Functions ==-\n")
         print("  Delete All Books [1]\n  List all Files [2]\n  Back to Menu [0]")
         result = input("Enter corresponding number: ").strip()
         print("\n")
-        if result == "1":
-            terminal_delete_all_books()
-        elif result == "2":
-            terminal_list_book_files()
-        elif result == "0":
-            print("Back to Menu...\n")
+        if result == "0":
+            print("Exiting to Menu...")
             break
-        else:
-            print("Invalid number.")
-            return
+        func = actions.get(result)
+        if func is None:
+            print("Please enter a valid number.")
+            continue
+        func()
 
 def main() -> None:
     terminal_menu()

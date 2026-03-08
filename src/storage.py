@@ -98,7 +98,7 @@ def file_return(file_key: str) -> Path | None:
 @error_handling
 def list_files() -> None:
     logger.debug("Printing all files")
-    for p in BOOK_DIR.rglob("*.txt"):
+    for p in BOOK_DIR.rglob("*.pdf"):
         print(f"{p}\n")
     if not p:
         logger.debug("Cannot print files, empty directory.")
