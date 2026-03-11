@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
     <title>Home Page</title>
 </head>
 <body>
     <header>
             <h1>Library Project</h1>
+
+            <div> <!-- Add Book Button Placeholder -->
+                <p>Add (+)</p>
+            </div>
     </header>
 
     <main>
         <section> <!-- Search -->
-
+            
         </section>
         <section> <!-- Filter -->
 
@@ -20,7 +26,9 @@
 
         <section> <!-- Grid Book Display-->
             <article> <!-- Example Book Container -->
-
+                {% for x in content %}
+                    <p>{{x}}</p>
+                {% endfor %}
             </article>
         </section>
 

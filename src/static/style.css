@@ -1,0 +1,14 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-style: solid; /* solid */
+    border-color: black; /* Black border to better outline website structure */
+}
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    margin: 1em;
+}
+p {
+    margin: 1em;
+}
