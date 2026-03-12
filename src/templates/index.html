@@ -3,35 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Style Sheet -->
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/style.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika+Negative:wght@300..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
     <title>Home Page</title>
 </head>
 <body>
-    <header>
-            <h1>Library Project</h1>
+    
+    <section class="top_controls">
+        <header class="page_header">
+                <h1>Library Project</h1>
 
-            <div> <!-- Add Book Button Placeholder -->
-                <p>Add (+)</p>
+                <button class="add_button">Add (+)</button>
+        </header>
+
+        <section class="search_bar"> <!-- Search -->
+            <h2>Search:</h2>
+        </section>
+
+        <section class="filter_bar"> <!-- Filter -->
+            <h2>Filter:</h2>
+        </section>
+    </section>
+
+    <!-- In Progress... -->
+    <main class="library_content">
+    <section class="book_list">
+        <article class="book_card">
+            <div class="book_info">
+                <h3 class="book_title">Title</h3>
+                <p class="book_author">Author</p>
+                <p class="book_year">year</p>
+
+                <div class="book_actions">
+                    <button>Open</button>
+                    <button>Delete</button>
+                </div>
             </div>
-    </header>
 
-    <main>
-        <section> <!-- Search -->
-            
-        </section>
-        <section> <!-- Filter -->
-
-        </section>
-
-        <section> <!-- Grid Book Display-->
-            <article> <!-- Example Book Container -->
-                {% for x in content %}
-                    <p>{{x}}</p>
-                {% endfor %}
-            </article>
-        </section>
-
-    </main>
+            <div class="book_cover">
+                <img src="" alt="Image">
+            </div>
+        </article>
+    </section>
+</main>
 </body>
 </html>
