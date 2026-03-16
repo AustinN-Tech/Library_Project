@@ -67,3 +67,53 @@ header h1 {
 .filter_bar h2 {
     margin: 0.5em;
 }
+
+
+.book_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book_card {
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: 1fr 40%;
+    align-items: stretch;
+    gap: 2rem;
+    border: black;
+    border-style: solid;
+    border-radius: 8px;
+}
+
+.book_cover img {
+    width: 100%;
+    height: auto;
+}
+
+.book_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.book_info h3 {
+    font-size: 2.5rem;
+    margin: 1em;
+}
+
+.book_info p {
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.book_actions {
+    margin-top: auto;
+}
+
+.book_actions button {
+    width: 25%;
+    margin: 1rem;
+    font-size: 1.5rem;
+    border-width: 2px;
+    border-radius: 8px;
+}

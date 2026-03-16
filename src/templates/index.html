@@ -47,7 +47,23 @@
             </div>
 
             <div class="book_cover">
-                <img src="" alt="Image">
+                <img src="{{ url_for('static', filename='images/dune_cover.jpg') }}">
+            </div>
+        </article>
+        <article class="book_card">
+            <div class="book_info">
+                <h3 class="book_title">Dune</h3>
+                <p class="book_author">Frank Herbert</p>
+                <p class="book_year">1965</p>
+
+                <div class="book_actions">
+                    <button>Open</button>
+                    <button>Delete</button>
+                </div>
+            </div>
+
+            <div class="book_cover">
+                <img src="{{ url_for('static', filename='images/dune_cover.jpg') }}">
             </div>
         </article>
     </section>
