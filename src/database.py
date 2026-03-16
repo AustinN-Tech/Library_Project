@@ -1,4 +1,5 @@
 import sqlite3
+from dataclasses import dataclass
 # package the code? <-- learn how to do this
 from utility_functions import *
 from storage import *
@@ -32,21 +33,40 @@ CREATE TABLE IF NOT EXISTS books (
 )
 """)
 
+@dataclass
+class Book:
+    title: str
+    author: str
+    genre: str
+    date_added: int
+    file_key: str
+    original_filename: str
+
+def row_to_book(row) -> Book:
+    return Book(
+        title = row[1],
+        author = row[2],
+        genre = row[3],
+        date_added = row[4],
+        file_key = row[5],
+        original_filename= row[6]
+    )
+
 @error_handling
 def add_book(title: str, author: str, genre: str, filename: str, path: Path) -> None:
-    file_key = create_book_pdf(path) # Creates file and returns file_key for storage
+    file_key = create_book_pdf(path)
     with conn:
         c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
                   (title, author, genre, filename, file_key))
-        print(f"{title.title()} added.\n")
+        print(f"{title} added.\n")
         logger.info(f"Added Book: {title}, file_key: {file_key}")
 
 @error_handling
-def delete_book(title: str) -> None:
+def delete_book(book: Book) -> None:
     with conn:
-        c.execute("DELETE FROM books WHERE title=(?)", (title,))
-        print(f"{title} deleted.\n")
-        logger.info(f"Deleted Book from db: {title}")
+        c.execute("DELETE FROM books WHERE title=(?)", (book.title,))
+        print(f"{book.title} deleted.\n")
+        logger.info(f"Deleted Book from db: {book.title}")
 
 @error_handling
 def delete_all_db() -> None:
@@ -62,7 +82,8 @@ def full_delete_all_db() -> None:
         results = c.fetchall()
         if results:
             for row in results:
-                full_delete(title=row[1])
+                book = row_to_book(row)
+                full_delete(book)
             print("All books fully deleted.")
             logger.info(f"All book files and rows in db deleted from library.")
         else:
@@ -70,24 +91,25 @@ def full_delete_all_db() -> None:
             logger.info("No books found in database.")
 
 @error_handling
-def update_book(title: str, column: str, value: str) -> None:
+def update_book(book: Book, column: str, value: str) -> None:
     ALLOWED_COLUMNS = {"title", "author", "genre", "original_filename"}
     if column not in ALLOWED_COLUMNS: # check if column input is valid
         raise ValueError("Invalid column")
     with conn:
-        c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, title))
-        print(f"Updated {title.capitalize()}'s {column} with new value of {value}")
-        logger.info(f"Updated Book '{title}', updated {column} with new value of {value}")
+        c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, book.title))
+        print(f"Updated {book.title.capitalize()}'s {column} with new value of {value}")
+        logger.info(f"Updated Book '{book.title}', updated {column} with new value of {value}")
 
 @error_handling
-def display_all_books() -> list[str] | None:
+def display_all_books() -> list[str]:
     with conn:
         c.execute("SELECT * FROM books")
         results = c.fetchall()
         if results:
             data = [] # create empty list to store results
             for row in results:
-                data.append(return_formatted_output(row[1], row[2], row[3], row[4])) # append list with formatted data
+                book = row_to_book(row) # using book object (much more readable)
+                data.append(return_formatted_output(book.title, book.author, book.genre, book.date_added)) # append list with formatted data
             logger.info("Returned All Book Data")
             return data
         else:
@@ -95,7 +117,7 @@ def display_all_books() -> list[str] | None:
             logger.info("No books found in database.")
 
 @error_handling
-def get_book(title: str) -> tuple[any] | None:
+def get_book(title: str) -> Book | None:
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
         row = c.fetchone()
@@ -103,33 +125,41 @@ def get_book(title: str) -> tuple[any] | None:
             logger.info(f"get_book(): {title} -> NOT FOUND")
             return
         logger.info(f"Returned get_book(): {title}")
-        return row
+        book = row_to_book(row) # convert row to book object
+        return book
 
 # Searches using incomplete inputs (ie: title entered "Tale of" returns book titled "Tale of the Turtle")
 @error_handling
-def partial_search(title: str) -> tuple[any] | None:
+def partial_search(title: str) -> list[Book]:
+        search_results = []
         search = f"%{title}%" # format user input with % wildcard
         with conn:
             c.execute("SELECT * FROM books WHERE title LIKE ?", (search,))
-            results = c.fetchall()
-            if not results:
+            database_results = c.fetchall()
+
+            if not database_results:
                 logger.info(f"partial_search(): {search} -> NOT FOUND")
-                return
+                return search_results # would be empty list
+            
+            for row in database_results:
+                book = row_to_book(row) # convert row to book object
+                search_results.append(book)
+                
             logger.info(f"Returned partial_search(): {search}")
-            return results
+            return search_results
 
 @error_handling   
-def filter(column: str, value: str | None, order: str) -> list[str]:
-    data = [] # create empty list to store results
+def filter(column: str, value: str | None, order: str) -> list[Book]:
+    search_results = [] # create empty list to store results
 
     column = validate_column(column)
     order = validate_order(order)
     if not column or not order: # if column or order invalid, return
-        return data # returns empty data
+        return search_results # returns empty data
 
     if value is not None and value != "":
         query = f"SELECT * FROM books WHERE {column} LIKE (?) ORDER BY {column} {order}"
-        params = (value,)
+        params = (f"%{value}%",) # wrap in wildcard so LIKE will enact partial search
         c.execute(query, params)
     else: # if not filtered by direct value
         query = (f"SELECT * FROM books ORDER BY {column} {order}")
@@ -137,42 +167,15 @@ def filter(column: str, value: str | None, order: str) -> list[str]:
 
     results = c.fetchall()
     for row in results:
-        data.append(row) # append list with formatted data
+        book = row_to_book(row) # converting row to book object
+        search_results.append(book) # append list with formatted data
     logger.info("Returned filtered data")
-    return data
-
-# Make general return function...
-@error_handling
-def return_file_key(title: str) -> str | None:
-    with conn:
-        c.execute("SELECT file_key FROM books WHERE title=(?)", (title,))
-        row = c.fetchone()
-        if not row: # if it returns nothing, return none
-            logger.info(f"return_file_key: {title} -> NOT FOUND")
-            return None
-        
-        file_key = row[0] # since it returns a tuple, we must index it
-        logger.info(f"return_file_key: {title} -> {file_key}")
-        return file_key
+    return search_results
 
 @error_handling
-def return_title(file_key: str) -> str | None:
-    with conn:
-        c.execute("SELECT title FROM books where file_key=(?)", (file_key,))
-        row = c.fetchone()
-        if not row: # if it returns nothing, return none
-            logger.info(f"return_title(): {file_key} -> NOT FOUND")
-            return None
-        
-        title = row[0] # since it returns a tuple, we must index it
-        logger.info(f"returned title from {file_key}: {title}")
-        return title
-
-@error_handling
-def full_delete(title: str) -> None:
-    file_key = return_file_key(title) # obtain file_key
-    delete_book_file(file_key) # delete filepath (now fully deleted)
-    delete_book(title) # delete from SQL db
+def full_delete(book: Book) -> None:
+    delete_book_file(book.file_key) # delete filepath (now fully deleted)
+    delete_book(book.title) # delete from SQL db
 
 def main() -> None:
     pass
