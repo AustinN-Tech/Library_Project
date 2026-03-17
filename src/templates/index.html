@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Style Sheet -->
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,38 +34,24 @@
     <!-- In Progress... -->
     <main class="library_content">
     <section class="book_list">
-        <article class="book_card">
-            <div class="book_info">
-                <h3 class="book_title">Title</h3>
-                <p class="book_author">Author</p>
-                <p class="book_year">year</p>
+        {% for book in books %}
+            <article class="book_card">
+                <div class="book_info">
+                    <h3 class="book_title">{{book.title.title()}}</h3>
+                    <p class="book_author">{{book.author.title()}}</p>
+                    <p class="book_year">Date Added: {{book.date_added}}</p>
 
-                <div class="book_actions">
-                    <button>Open</button>
-                    <button>Delete</button>
+                    <div class="book_actions">
+                        <button>Open</button>
+                        <button>Delete</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="book_cover">
-                <img src="{{ url_for('static', filename='images/dune_cover.jpg') }}">
-            </div>
-        </article>
-        <article class="book_card">
-            <div class="book_info">
-                <h3 class="book_title">Dune</h3>
-                <p class="book_author">Frank Herbert</p>
-                <p class="book_year">1965</p>
-
-                <div class="book_actions">
-                    <button>Open</button>
-                    <button>Delete</button>
+                <div class="book_cover">
+                    <img src="{{ url_for('static', filename=book.cover_path) }}" alt="Cover of {{book.title.title()}}">
                 </div>
-            </div>
-
-            <div class="book_cover">
-                <img src="{{ url_for('static', filename='images/dune_cover.jpg') }}">
-            </div>
-        </article>
+            </article>
+        {% endfor %}
     </section>
 </main>
 </body>

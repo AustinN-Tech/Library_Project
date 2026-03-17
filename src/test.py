@@ -72,10 +72,10 @@ def print_book_info(book: Book) -> None:
 
 def terminal_print_all_books() -> None:
     print("-== All Books ==-\n")
-    data = db.display_all_books()
+    data = db.return_all_books()
     if data:
-        for i in data:
-            print(i, "\n")
+        for book in data:
+            print(return_formatted_output(book.title, book.author, book.genre, book.date_added), "\n")
     else:
         return
 

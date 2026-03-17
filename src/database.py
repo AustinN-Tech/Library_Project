@@ -25,10 +25,11 @@ c.execute("""
 CREATE TABLE IF NOT EXISTS books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT UNIQUE NOT NULL,
-    author TEXT,
+    author TEXT NOT NULL DEFAULT 'Unknown',
     genre TEXT NOT NULL,
     date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
     file_key TEXT NOT NULL UNIQUE,
+    cover_path TEXT NOT NULL,
     original_filename TEXT NOT NULL
 )
 """)
@@ -37,11 +38,12 @@ CREATE TABLE IF NOT EXISTS books (
 class Book:
     id: int
     title: str
-    author: str
     genre: str
     date_added: int
     file_key: str
+    cover_path: str
     original_filename: str
+    author: str = 'Unknown'
 
 def row_to_book(row) -> Book:
     return Book(
@@ -51,15 +53,17 @@ def row_to_book(row) -> Book:
         genre = row[3],
         date_added = row[4],
         file_key = row[5],
-        original_filename= row[6]
+        cover_path = row[6],
+        original_filename= row[7]
     )
 
 @error_handling
 def add_book(title: str, author: str, genre: str, filename: str, path: Path) -> None:
     file_key = create_book_pdf(path)
+    cover_path = generate_cover(return_pdf_file_path(file_key), file_key)
     with conn:
-        c.execute("INSERT INTO books (title, author, genre, original_filename, file_key) VALUES (?, ?, ?, ?, ?)", 
-                  (title, author, genre, filename, file_key))
+        c.execute("INSERT INTO books (title, author, genre, original_filename, file_key, cover_path) VALUES (?, ?, ?, ?, ?, ?)", 
+                  (title, author, genre, filename, file_key, cover_path))
         print(f"{title} added.\n")
         logger.info(f"Added Book: {title}, file_key: {file_key}")
 
@@ -103,7 +107,7 @@ def update_book(book: Book, column: str, value: str) -> None:
         logger.info(f"Updated Book '{book.title}', updated {column} with new value of {value}")
 
 @error_handling
-def display_all_books() -> list[str]:
+def return_all_books() -> list[Book]:
     with conn:
         c.execute("SELECT * FROM books")
         results = c.fetchall()
@@ -111,7 +115,7 @@ def display_all_books() -> list[str]:
             data = [] # create empty list to store results
             for row in results:
                 book = row_to_book(row) # using book object (much more readable)
-                data.append(return_formatted_output(book.title, book.author, book.genre, book.date_added)) # append list with formatted data
+                data.append(book) # append list with book object
             logger.info("Returned All Book Data")
             return data
         else:
@@ -187,6 +191,7 @@ def filter(column: str, value: str | None, order: str) -> list[Book]:
 @error_handling
 def full_delete(book: Book) -> None:
     delete_book_file(book.file_key) # delete filepath (now fully deleted)
+    delete_book_cover(book.cover_path) # delete cover file
     delete_book(book) # delete from SQL db
 
 def main() -> None:
