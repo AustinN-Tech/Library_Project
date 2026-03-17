@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS books (
 
 @dataclass
 class Book:
+    id: int
     title: str
     author: str
     genre: str
@@ -44,6 +45,7 @@ class Book:
 
 def row_to_book(row) -> Book:
     return Book(
+        id = row[0],
         title = row[1],
         author = row[2],
         genre = row[3],
@@ -64,7 +66,7 @@ def add_book(title: str, author: str, genre: str, filename: str, path: Path) -> 
 @error_handling
 def delete_book(book: Book) -> None:
     with conn:
-        c.execute("DELETE FROM books WHERE title=(?)", (book.title,))
+        c.execute("DELETE FROM books WHERE id=(?)", (book.id,))
         print(f"{book.title} deleted.\n")
         logger.info(f"Deleted Book from db: {book.title}")
 
@@ -96,7 +98,7 @@ def update_book(book: Book, column: str, value: str) -> None:
     if column not in ALLOWED_COLUMNS: # check if column input is valid
         raise ValueError("Invalid column")
     with conn:
-        c.execute(f"UPDATE books set {column} = (?) WHERE title = (?)", (value, book.title))
+        c.execute(f"UPDATE books set {column} = (?) WHERE id = (?)", (value, book.id))
         print(f"Updated {book.title.capitalize()}'s {column} with new value of {value}")
         logger.info(f"Updated Book '{book.title}', updated {column} with new value of {value}")
 
@@ -117,16 +119,26 @@ def display_all_books() -> list[str]:
             logger.info("No books found in database.")
 
 @error_handling
-def get_book(title: str) -> Book | None:
+def get_book_by_title(title: str) -> Book | None:
     with conn:
         c.execute("SELECT * FROM books WHERE title=(?)", (title,))
         row = c.fetchone()
         if not row:
-            logger.info(f"get_book(): {title} -> NOT FOUND")
+            logger.info(f"get_book_by_title(): {title} -> NOT FOUND")
             return
-        logger.info(f"Returned get_book(): {title}")
-        book = row_to_book(row) # convert row to book object
-        return book
+        logger.info(f"Returned get_book_by_title(): {title}")
+        return row_to_book(row) # convert row to book object
+    
+@error_handling
+def get_book_by_id(book_id: int) -> Book | None:
+    with conn:
+        c.execute("SELECT * FROM books WHERE id=(?)", (book_id,))
+        row = c.fetchone()
+        if not row:
+            logger.info(f"get_book_by_id(): {book_id} -> NOT FOUND")
+            return
+        logger.info(f"Returned get_book_by_id(): {book_id}")
+        return row_to_book(row) # convert row to book object
 
 # Searches using incomplete inputs (ie: title entered "Tale of" returns book titled "Tale of the Turtle")
 @error_handling
@@ -175,7 +187,7 @@ def filter(column: str, value: str | None, order: str) -> list[Book]:
 @error_handling
 def full_delete(book: Book) -> None:
     delete_book_file(book.file_key) # delete filepath (now fully deleted)
-    delete_book(book.title) # delete from SQL db
+    delete_book(book) # delete from SQL db
 
 def main() -> None:
     pass

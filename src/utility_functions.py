@@ -67,17 +67,19 @@ def get_order() -> str:
 
 # in progress
 def get_column() -> str:
-    column = input("Sort by:\nTitle [1]\nAuthor [2]\nGenre [3]\nEnter Number: ").strip()
-    while column not in ["1" ,"2", "3"]:
-        print("Invalid Choice. Choose from (1-3)")
-        column = input("\nSort by:\nTitle [1]\nAuthor [2]\nGenre [3]\nEnter Number: ").strip()
+    column = input("Sort by:\n Title [1]\n Author [2]\n Genre [3]\n Exit to Menu [0]\nEnter Number: ").strip()
+    while column not in ["1" ,"2", "3", "0"]:
+        print("Invalid Choice. Choose from [1-3] (0 to Exit)")
+        column = input("\nSort by:\n Title [1]\n Author [2]\n Genre [3]\n Exit to Menu [0]\nEnter Number: ").strip()
     print("\n")
     if column == "1": 
         column = "title"
     elif column == "2":
         column = "author"
-    else: 
+    elif column == "3":
         column = "genre"
+    else: 
+        column = "exit"
     return column
 
 # Prompts User for Book Genre:
@@ -96,17 +98,19 @@ def get_genre() -> str:
 
 @error_handling
 def get_update_column() -> str:
-    column = input("Change Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
-    while column not in ["1" ,"2", "3"]:
-        print("Invalid Choice. Choose from (1-3)")
-        column = input("\nChange Data:\nTitle [1]\nAuthor[2]\nGenre[3]\nEnter Number: ").strip()
+    column = input("Change Data:\n Title [1]\n Author [2]\n Genre [3]\n Exit to Select Menu [0]\nEnter Number: ").strip()
+    while column not in ["1" ,"2", "3", "0"]:
+        print("\nInvalid Choice. Choose from [1-3] (0 to Exit)")
+        column = input("\nChange Data:\n Title [1]\n Author [2]\n Genre [3]\n Exit to Select Menu [0]\nEnter Number: ").strip()
     print("\n")
     if column == "1": 
         column = "title"
     elif column == "2":
         column = "author"
-    else: 
+    elif column == "3":
         column = "genre"
+    else: 
+        column = "exit"
     return column
 
 @error_handling
