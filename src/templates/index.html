@@ -31,7 +31,6 @@
         </section>
     </section>
 
-    <!-- In Progress... -->
     <main class="library_content">
     <section class="book_list">
         {% for book in books %}
@@ -42,7 +41,9 @@
                     <p class="book_year">Date Added: {{book.date_added}}</p>
 
                     <div class="book_actions">
-                        <button>Open</button>
+                        <a href= "{{ url_for('open_book', id=book.id)}}">
+                            Open
+                        </a>
                         <button>Delete</button>
                     </div>
                 </div>

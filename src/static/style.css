@@ -1,4 +1,12 @@
-
+:root { /* Defining color variables */
+    --offwhite: #E3EEF4;
+    --primary_color: #F6F6F6;
+    --grey: #D4D4D4;
+    --background_color: #E6FAFC;
+}
+body {
+    background-color: var(--background_color);
+}
 
 h1, h2 {
     font-family: 'Titillium Web', 'Roberto', sans-serif;
@@ -27,7 +35,7 @@ a { /* For info links and such */
 .top_controls {
     display: flex;
     flex-direction: column;
-    /* gap: 0.5em; */
+    background-color: var(--primary_color);
 }
 
 /* Header Bar */
@@ -46,6 +54,7 @@ header h1 {
     border-color: black;
     border-radius: 8px;
     margin: 1em;
+    background-color: var(--offwhite);
 }
 
 /* Search Bar */
@@ -84,6 +93,7 @@ header h1 {
     border: black;
     border-style: solid;
     border-radius: 8px;
+    background-color: var(--primary_color);
 }
 
 .book_cover {
@@ -119,10 +129,28 @@ header h1 {
     margin-top: auto;
 }
 
+.book_actions a {
+    width: 25%;
+    background-color: var(--offwhite);
+    text-decoration: none;
+    color: black;
+    margin: 1rem;
+    font-size: 1.5rem;
+    border-width: 2px;
+    border-radius: 8px;
+    border-color: black;
+    border-style: solid;
+    display: inline-block;
+    padding-top: 0.5%;
+    padding: 0.5%;
+    text-align: center;
+}
+
 .book_actions button {
     width: 25%;
     margin: 1rem;
     font-size: 1.5rem;
     border-width: 2px;
     border-radius: 8px;
+    background-color: var(--offwhite);
 }
