@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika+Negative:wght@300..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+    <title>Add Book</title>
+</head>
+<body>
+    <section class="top_controls">
+        <header class="page_header">
+                <h1>Library Project</h1>
+
+                <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
+        </header>
+
+        <section class="search_bar"> <!-- Search -->
+            <h2>Search:</h2>
+        </section>
+
+        <section class="filter_bar"> <!-- Filter -->
+            <h2>Filter:</h2>
+        </section>
+    </section>
+    <main class="add_book_content">
+        <h1>Add a Book</h1>
+        <form action="add" method="POST" enctype="multipart/form-data" class="add_book_form">
+            <!-- Enter Title... -->
+            <div>
+                <label for="title">Enter Title:</label>
+                <input type="text" id="title" name="title">
+            </div>
+            <!-- Enter Author... -->
+            <div>
+                <label for="author">Enter Author:</label>
+                <input type="text" id="author" name="author">
+            </div>
+            <!-- Enter Genre... -->
+            <div>
+                <label for="genre">Enter Genre:</label>
+                <input type="text" id="genre" name="genre">
+            </div>
+            <!-- Upload File (Extract Filename from uploaded filepath)... -->
+            <div>
+                <label for="book_file">Upload PDF: </label>
+                <input type="file" id="book_file" name="book_file">
+            </div>
+
+            <div class="add_buttons">
+                <button type="submit">Submit</button>
+                <button type="reset">Clear</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

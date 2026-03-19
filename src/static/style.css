@@ -30,6 +30,16 @@ p {
 a { /* For info links and such */
     font-family: 'Epilogue', 'Montserrat', sans-serif;
     font-weight: normal;
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    cursor: pointer;
+}
+
+label {
+    font-family: 'Epilogue', 'Montserrat', sans-serif;
+    font-size: 1.25rem;
 }
 
 .top_controls {
@@ -53,8 +63,10 @@ header h1 {
     border-style: solid;
     border-color: black;
     border-radius: 8px;
+    font-size: 1.5rem;;
     margin: 1em;
     background-color: var(--offwhite);
+    padding: 0.5%;
 }
 
 /* Search Bar */
@@ -77,6 +89,9 @@ header h1 {
     margin: 0.5em;
 }
 
+button:hover {
+    cursor: pointer;
+}
 
 .book_list {
     display: flex;
@@ -132,8 +147,6 @@ header h1 {
 .book_actions a {
     width: 25%;
     background-color: var(--offwhite);
-    text-decoration: none;
-    color: black;
     margin: 1rem;
     font-size: 1.5rem;
     border-width: 2px;
@@ -141,16 +154,47 @@ header h1 {
     border-color: black;
     border-style: solid;
     display: inline-block;
-    padding-top: 0.5%;
     padding: 0.5%;
     text-align: center;
 }
 
+.book_actions form {
+    display: inline-block
+}
+
 .book_actions button {
-    width: 25%;
+    width: 100%;
     margin: 1rem;
     font-size: 1.5rem;
     border-width: 2px;
     border-radius: 8px;
     background-color: var(--offwhite);
+}
+
+.add_book_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+    margin: 5%;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.add_book_content h1 {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.add_book_form {
+    margin-bottom: 2%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.add_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }

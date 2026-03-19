@@ -1,5 +1,6 @@
 import logging
 import sqlite3
+import functools
 from datetime import datetime # for formatting time
 from pathlib import Path
 import time # for getting current time
@@ -24,6 +25,7 @@ def initialize_logging():
 logger = initialize_logging()
 
 def error_handling(func): #error handling logic decorator
+    @functools.wraps(func) # preveres original function metadata
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)

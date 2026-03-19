@@ -64,7 +64,9 @@ def terminal_update_book(book: Book) -> None:
     column = get_update_column()
     if column == "exit":
         return
-    value = get_update_value()
+    if column == "genre":
+        value = get_genre()
+    else: value = get_update_value()
     db.update_book(book, column, value)
 
 def print_book_info(book: Book) -> None:
@@ -150,7 +152,7 @@ def terminal_filter() -> list[Book] | None:
     else: value = get_value()
     order = get_order()
     # Gets and returns search
-    search_results = db.filter(column, value, order)
+    search_results = db.filter_books(column, value, order)
     if not search_results:
         print(f"No books found with specified filter")
         return

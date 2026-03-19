@@ -17,9 +17,9 @@
     
     <section class="top_controls">
         <header class="page_header">
-                <h1>Library Project</h1>
+            <h1>Library Project</h1>
 
-                <button class="add_button">Add (+)</button>
+            <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
         </header>
 
         <section class="search_bar"> <!-- Search -->
@@ -44,7 +44,10 @@
                         <a href= "{{ url_for('open_book', id=book.id)}}">
                             Open
                         </a>
-                        <button>Delete</button>
+                        <form action="/delete" method="POST">
+                            <input type="hidden" name="book_id" value="{{book.id}}">
+                            <button type="submit">Delete</button>
+                        </form>
                     </div>
                 </div>
 
