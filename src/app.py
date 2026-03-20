@@ -13,6 +13,16 @@ def home():
         book.date_added = datetime.fromtimestamp(book.date_added).strftime('%Y-%m-%d')
     return render_template("index.html", books=books)
 
+@app.route("/search", methods=['POST'])
+def search_book():
+    search_input = request.form["search_input"]
+    search_results = db.partial_search(search_input)
+    if not search_results:
+        return "No results found"
+    for book in search_results: # formatting time for display
+        book.date_added = datetime.fromtimestamp(book.date_added).strftime('%Y-%m-%d')
+    return render_template("index.html", books=search_results)
+
 @app.route("/books/<id>")
 def open_book(id):
     book = db.get_book_by_id(id)

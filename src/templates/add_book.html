@@ -16,13 +16,16 @@
 <body>
     <section class="top_controls">
         <header class="page_header">
-                <h1>Library Project</h1>
+            <h1>Library Project</h1>
 
-                <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
+            <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
         </header>
 
         <section class="search_bar"> <!-- Search -->
-            <h2>Search:</h2>
+            <form action="search" method="POST">
+                <label for="search_input">Search:</label>
+                <input type="text" id="search_input" name="search_input">
+            </form>
         </section>
 
         <section class="filter_bar"> <!-- Filter -->
@@ -42,10 +45,20 @@
                 <label for="author">Enter Author:</label>
                 <input type="text" id="author" name="author">
             </div>
-            <!-- Enter Genre... -->
+            <!-- Select Genre...-->
             <div>
-                <label for="genre">Enter Genre:</label>
-                <input type="text" id="genre" name="genre">
+                <label for="genre">Select Genre:</label>
+                <select id="genre" name="genre">
+                    <option value="">-- Choose a genre --</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery / Thriller">Mystery / Thriller</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                    <option value="Historical">Historical</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Science & Technology">Science & Technology</option>
+                </select>
             </div>
             <!-- Upload File (Extract Filename from uploaded filepath)... -->
             <div>

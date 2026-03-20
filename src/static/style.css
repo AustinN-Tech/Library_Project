@@ -76,8 +76,9 @@ header h1 {
     border-top-style: hidden;
     border-bottom-style: hidden;
 }
-.search_bar h2 {
-    margin: 0.5em;
+
+.search_bar form {
+    margin: 1%;
 }
 
 /* Filter Bar */
@@ -179,6 +180,7 @@ button:hover {
     margin: 5%;
     margin-left: 30%;
     margin-right: 30%;
+    border-radius: 8px;
 }
 
 .add_book_content h1 {

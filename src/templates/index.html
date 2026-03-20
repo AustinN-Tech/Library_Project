@@ -23,7 +23,10 @@
         </header>
 
         <section class="search_bar"> <!-- Search -->
-            <h2>Search:</h2>
+            <form action="search" method="POST">
+                <label for="search_input">Search:</label>
+                <input type="text" id="search_input" name="search_input">
+            </form>
         </section>
 
         <section class="filter_bar"> <!-- Filter -->
@@ -41,9 +44,7 @@
                     <p class="book_year">Date Added: {{book.date_added}}</p>
 
                     <div class="book_actions">
-                        <a href= "{{ url_for('open_book', id=book.id)}}">
-                            Open
-                        </a>
+                        <a href= "{{ url_for('open_book', id=book.id)}}">Open</a>
                         <form action="/delete" method="POST">
                             <input type="hidden" name="book_id" value="{{book.id}}">
                             <button type="submit">Delete</button>
