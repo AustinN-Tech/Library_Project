@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika+Negative:wght@300..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    
+    <section class="top_controls">
+        <header class="page_header">
+            <h1>Library Project</h1>
+
+            <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
+        </header>
+
+        <div class="search_and_sort">
+            <section class="search_bar"> <!-- Search -->
+                <form action="search" method="POST">
+                    <label for="search_input">Search books:</label>
+                    <input type="text" id="search_input" name="search_input">
+                </form>
+            </section>
+
+            <section class="filter_bar"> <!-- Filter -->
+                <form action="filter" method="POST">
+                    <label for="filter">Sort By:</label>
+                    <select name="column">
+                        <option value="title">Title</option>
+                        <option value ="author">Author</option>
+                        <option value ="genre">Genre</option>
+                        <option value ="date_added">Date Added</option>
+                    </select>
+                    <select name="order">
+                        <option value ="ASC">Ascending</option>
+                        <option value ="DESC">Descending</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
+            </section>
+        </div>
+    </section>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

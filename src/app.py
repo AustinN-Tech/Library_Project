@@ -6,6 +6,10 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
 @app.route("/home")
 def home():
     books = db.return_all_books()

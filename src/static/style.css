@@ -40,12 +40,16 @@ a:hover {
 label {
     font-family: 'Epilogue', 'Montserrat', sans-serif;
     font-size: 1.25rem;
+    white-space: nowrap;
 }
 
 .top_controls {
     display: flex;
     flex-direction: column;
     background-color: var(--primary_color);
+    border-style: solid;
+    border-color: black;
+    border-top-style: hidden;
 }
 
 /* Header Bar */
@@ -54,6 +58,8 @@ header {
     align-items: center;
     justify-content: space-between;
     border-style: solid; /* solid */
+    border-right-style: hidden;
+    border-left-style: hidden;
     border-color: black; /* Black border to better outline website structure */
 }
 header h1 {
@@ -69,25 +75,19 @@ header h1 {
     padding: 0.5%;
 }
 
-/* Search Bar */
-.search_bar {
-    border-style: solid;
-    border-color: black;
-    border-top-style: hidden;
-    border-bottom-style: hidden;
-}
-
-.search_bar form {
+.search_and_sort {
+    display: flex;
+    flex-direction: row;
     margin: 1%;
+    gap: 1rem;
 }
 
-/* Filter Bar */
-.filter_bar {
-    border-style: solid;
-    border-color: black;
-}
-.filter_bar h2 {
-    margin: 0.5em;
+
+.search_bar form,
+.filter_bar form {
+    display: flex;
+    gap: 1rem;
+    margin: 1%;
 }
 
 button:hover {
