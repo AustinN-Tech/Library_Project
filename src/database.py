@@ -120,8 +120,8 @@ def full_delete_all_db(conn: sqlite3.Connection) -> None:
 @error_handling
 @db_connection_handling
 def update_book(conn: sqlite3.Connection, book: Book, column: str, value: str) -> None:
-    ALLOWED_COLUMNS = {"title", "author", "genre", "original_filename"}
-    if column not in ALLOWED_COLUMNS: # check if column input is valid
+    column = validate_column(column)
+    if not column:
         raise ValueError("Invalid column")
 
     c = conn.cursor()
@@ -216,7 +216,7 @@ def filter_books(conn: sqlite3.Connection, column: str, value: str | None, order
     
     c = conn.cursor()
 
-    if value is not None and value != "":
+    if value:
         query = f"SELECT * FROM books WHERE {column} LIKE (?) ORDER BY {column} {order}"
         params = (f"%{value}%",) # wrap in wildcard so LIKE will enact partial search
         c.execute(query, params)
@@ -229,6 +229,33 @@ def filter_books(conn: sqlite3.Connection, column: str, value: str | None, order
         book = row_to_book(row) # converting row to book object
         search_results.append(book) # append list with formatted data
     logger.info("Returned filtered data")
+    return search_results
+
+@error_handling
+@db_connection_handling
+def global_search(conn: sqlite3.Connection, column: str, value: str | None, order: str) -> list[Book]:
+    search_results = [] # create empty list to store results
+
+    column = validate_column(column)
+    order = validate_order(order)
+    if not column or not order: # if column or order invalid, return
+        return search_results # returns empty data
+    
+    c = conn.cursor()
+
+    if value:
+        query = f"SELECT * FROM books WHERE title LIKE (?) OR author LIKE (?) OR genre LIKE (?) ORDER BY {column} {order}"
+        params = (f"%{value}%", f"%{value}%", f"%{value}%")
+        c.execute(query, params)
+    else:
+        query = (f"SELECT * FROM books ORDER BY {column} {order}")
+        c.execute(query)
+
+    results = c.fetchall()
+    for row in results:
+        book = row_to_book(row) # converting row to book object
+        search_results.append(book) # append list with formatted data
+    logger.info("Returned global search data")
     return search_results
 
 @error_handling

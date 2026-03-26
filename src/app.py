@@ -18,9 +18,11 @@ def home():
     return render_template("index.html", books=books)
 
 @app.route("/search", methods=['POST'])
-def search_book():
+def search():
     search_input = request.form["search_input"]
-    search_results = db.partial_search(search_input)
+    column = request.form["column"]
+    order = request.form["order"]
+    search_results = db.global_search(column, search_input, order)
     if not search_results:
         return "No results found"
     for book in search_results: # formatting time for display
