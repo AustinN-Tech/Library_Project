@@ -8,6 +8,7 @@ body {
     background-color: var(--background_color);
 }
 
+/* Global Font Styling */
 h1, h2 {
     font-family: 'Titillium Web', 'Roberto', sans-serif;
     font-weight: normal;
@@ -40,7 +41,7 @@ a:hover {
 label {
     font-family: 'Epilogue', 'Montserrat', sans-serif;
     font-size: 1.25rem;
-    white-space: nowrap;
+    white-space: nowrap; /* So the text doesn't get squished */
 }
 
 .top_controls {
@@ -56,7 +57,7 @@ label {
 header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* puts items (site title and add button) on opposite sides*/
     border-style: solid; /* solid */
     border-right-style: hidden;
     border-left-style: hidden;
@@ -83,8 +84,7 @@ header h1 {
 }
 
 
-.search_bar form,
-.filter_bar form {
+.search_bar form {
     display: flex;
     gap: 1rem;
     margin: 1%;
@@ -103,8 +103,8 @@ button:hover {
 .book_card {
     margin: 1%;
     display: grid;
-    grid-template-columns: 1fr 40%;
-    align-items: stretch;
+    grid-template-columns: 1fr 40%; /* Cover takes 40% of code, info takes rest */
+    /* align-items: stretch; */
     gap: 2rem;
     border: black;
     border-style: solid;
@@ -119,11 +119,11 @@ button:hover {
 }
 
 .book_cover img {
-    width: 100%;
+    width: 100%; /* takes 100% of container (book_cover container) */
     height: 100%;
     border-left: 3px solid black;
-    object-fit: cover;
-    display: block;
+    object-fit: cover; /* object should cover container as it resizes */
+    display: block; /* takes full width available */
 }
 
 .book_info {
@@ -143,9 +143,12 @@ button:hover {
 
 .book_actions {
     margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* puts 3 dot menu and open button on opposite sides */
 }
 
-.book_actions a {
+.open_button {
     width: 25%;
     background-color: var(--offwhite);
     margin: 1rem;
@@ -159,17 +162,56 @@ button:hover {
     text-align: center;
 }
 
-.book_actions form {
-    display: inline-block
+.extra_actions_button img {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
-.book_actions button {
-    width: 100%;
+.extra_actions_button {
+    width: 10%;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.extra_actions {
+    position: relative; /* allows dropdown (which is absolute) to be position relative to it */
     margin: 1rem;
-    font-size: 1.5rem;
-    border-width: 2px;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.extra_actions_dropdown {
+    display: none; /* hides the dropdown */
+    position: absolute; /* takes it out of normal flow */
+    right: 0; /* aligns along right edge */
+    top: 100%; /* places dropdown just below parent, 100% = height of parent */
+    min-width: 10rem;
+    background: var(--offwhite);
+    border: 1px solid black;
     border-radius: 8px;
-    background-color: var(--offwhite);
+    padding: 0.5rem 0;
+}
+
+.extra_actions_dropdown a,
+.extra_actions_dropdown button {
+    display: block; /* each item takes full width, stacks vertically */
+    width: 100%; /* takes up 100% of container width */
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.extra_actions_dropdown a:hover,
+.extra_actions_dropdown button:hover {
+    background: var(--primary_color);
+}
+
+.extra_actions:hover .extra_actions_dropdown {
+    display: block;
 }
 
 .add_book_content {

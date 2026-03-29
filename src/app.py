@@ -1,10 +1,13 @@
 from flask import Flask, render_template, send_file, request, redirect, url_for
 from datetime import datetime # for formatting time
 from storage import return_pdf_file_path, BOOK_DIR
+from utility_functions import initialize_logging
 import database as db
 import os
 
 app = Flask(__name__)
+
+logger = initialize_logging() # setting logging
 
 @app.route("/test")
 def test():
@@ -37,9 +40,11 @@ def open_book(id):
 
 @app.route("/delete", methods=["POST"])
 def delete_action():
+    logger.debug("Attempting delete of book (flask)...")
     book_id = request.form["book_id"]
     book = db.get_book_by_id(book_id)
     db.full_delete(book)
+    logger.debug("Deleted book, returning home page...")
     return redirect(url_for("home"))
 
 @app.route("/add_book")

@@ -12,11 +12,20 @@
                         <p class="book_year">Date Added: {{book.date_added}}</p>
 
                         <div class="book_actions">
-                            <a href= "{{ url_for('open_book', id=book.id)}}">Open</a>
-                            <form action="/delete" method="POST">
-                                <input type="hidden" name="book_id" value="{{book.id}}">
-                                <button type="submit">Delete</button>
-                            </form>
+                            <a class="open_button" href= "{{ url_for('open_book', id=book.id)}}">Open</a>
+                            <div class="extra_actions">
+                                <button class="extra_actions_button">
+                                    <img src="{{ url_for('static', filename='images/icons/dots.png') }}">
+                                </button>
+                                <div class="extra_actions_dropdown">
+                                    <a href=#>Update Info</a>
+                                    <a href=#>Change Cover</a>
+                                    <form action="delete" method="POST">
+                                        <input type="hidden" name="book_id" value="{{book.id}}">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
