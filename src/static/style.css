@@ -13,7 +13,6 @@ h1, h2 {
     font-family: 'Titillium Web', 'Roberto', sans-serif;
     font-weight: normal;
     font-size: 1.5rem;
-    margin: 0.75em;
 }
 h3, h4 {
     font-family: 'Signika Negative', 'Nunito', sans-serif;
@@ -65,6 +64,7 @@ header {
 }
 header h1 {
     font-size: 2rem;
+    margin-left: 1%;
 }
 .add_button {
     border-style: solid;
@@ -99,6 +99,13 @@ button:hover {
     flex-direction: column;
     align-items: center;
 }
+
+/* .book_list {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+} */
 
 .book_card {
     margin: 1%;
@@ -214,6 +221,26 @@ button:hover {
     display: block;
 }
 
+.change_cover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1%;
+    padding: 4%;
+}
+
+.change_cover label {
+    font-size: 1rem;
+}
+
+.extra_actions_dropdown a {
+    font-family: 'Epilogue', 'Montserrat', sans-serif;
+}
+
+.extra_actions_dropdown form button {
+    font-family: 'Epilogue', 'Montserrat', sans-serif;
+}
+
 .add_book_content {
     display: flex;
     flex-direction: column;
@@ -230,14 +257,14 @@ button:hover {
     margin-bottom: 2.5rem;
 }
 
-.add_book_form {
+.add_book_form, .update_book_form {
     margin-bottom: 2%;
     display: flex;
     flex-direction: column;
     gap: 3rem;
 }
 
-.add_buttons {
+.form_buttons {
     display: flex;
     align-items: center;
     justify-content: space-evenly;

@@ -97,11 +97,17 @@ def generate_cover(pdf_path: Path, file_key: str) -> str:
     return output_path.relative_to(STATIC_DIR).as_posix() # need to be relative path for flask to serve image, "as_posix()" swaps the direction of the slashes (/) making it into a format flask can use
 
 @error_handling
-def return_absolute_cover_path(cover_path: str) -> Path:
+def return_absolute_cover_path(cover_path: Path) -> Path:
     return STATIC_DIR / cover_path
 
 @error_handling
-def delete_book_cover(cover_path: str) -> None:
+def change_cover_file(old_cover_path: Path, new_cover_path: Path):
+    if not new_cover_path.exists(): # if new cover not found, raise error
+       raise FileNotFoundError(f" Path {new_cover_path} cannot be found.")
+    new_cover_path.replace(return_absolute_cover_path(old_cover_path)) # old path is obtained via db, so it is relative. Needs to be converted to absolute before replacement
+
+@error_handling
+def delete_book_cover(cover_path: Path) -> None:
     path = return_absolute_cover_path(cover_path) # gets absolute file path, needed for deletion
     if path.exists():
         path.unlink()

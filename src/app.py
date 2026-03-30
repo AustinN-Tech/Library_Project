@@ -1,9 +1,10 @@
 from flask import Flask, render_template, send_file, request, redirect, url_for
 from datetime import datetime # for formatting time
-from storage import return_pdf_file_path, BOOK_DIR
-from utility_functions import initialize_logging
+from storage import return_pdf_file_path, change_cover_file, BOOK_DIR, COVER_DIR
+from utility_functions import initialize_logging, book_file_check, cover_file_check
 import database as db
 import os
+from pathlib import Path
 
 app = Flask(__name__)
 
@@ -57,39 +58,43 @@ def add_action():
     author = request.form["author"]
     genre = request.form["genre"]
     file = request.files["book_file"]
-    if not file_check(file): # safety check on file
+    if not book_file_check(file): # safety check on file
         return "Invalid File"
     
-    path = os.path.join(BOOK_DIR, file.filename) # obtains path
-    file.save(path) # saves file to server
+    path = Path(BOOK_DIR) / file.filename
+    file.save(path)
 
     try: # trys to add file to db, if it fails, then it deletes the file.
         db.add_book(title, author, genre, file.filename, path)
     except Exception:
-        os.remove(path)
         return "Error Saving Book"
+    finally:
+        os.remove(path) # delete old original file uploaded by user
 
     return render_template("add_book.html")
 
-# File Checking Functions:
-def allowed_filename(filename):
-    if not filename.lower().endswith(".pdf"):
-        return False
-    return True
+@app.route("/update")
+def update_book_page():
+    return render_template("update_book.html")
 
-def check_magic_bytes(file):
-    magic_bytes = file.read(5) # obtain first 4 bytes of file (magic bytes which identify file type)
-    file.seek(0) # reset file reader
+@app.route("/change_cover", methods=['POST'])
+def change_cover():
+    book_id = request.form["book_id"]
+    book = db.get_book_by_id(book_id)
+    cover_file = request.files["cover_file"]
+    if not cover_file_check(cover_file): # safety check on file
+        return "Invalid File"
 
-    if not magic_bytes == b"%PDF-": #checks magic_bytes against bytes of %PDF-
-        return False
-    return True
+    path = Path(COVER_DIR) / cover_file.filename
+    cover_file.save(path)
 
-def file_check(file):
-    if file.name == "": return False
-    if not allowed_filename(file.filename) or not check_magic_bytes(file):
-        return False
-    return True
+    try:
+        change_cover_file(book.cover_path, path)
+    except Exception:
+        os.remove(path) # delete old original file uploaded by user
+        return "Error Saving Book"
+
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)

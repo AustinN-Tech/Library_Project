@@ -19,7 +19,12 @@
                                 </button>
                                 <div class="extra_actions_dropdown">
                                     <a href=#>Update Info</a>
-                                    <a href=#>Change Cover</a>
+                                    <form action="change_cover" method="POST" enctype="multipart/form-data" class="change_cover"> <!-- Need to revamp this feature via JS (combine all into one button) -->
+                                        <input type="hidden" name="book_id" value="{{book.id}}">
+                                        <label for="cover_file">Change Cover: </label>
+                                        <input type="file" id="cover_file" name="cover_file">
+                                        <button type="submit">Upload</button>
+                                    </form>
                                     <form action="delete" method="POST">
                                         <input type="hidden" name="book_id" value="{{book.id}}">
                                         <button type="submit">Delete</button>

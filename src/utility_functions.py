@@ -181,6 +181,47 @@ def create_file_key(file_type: str) -> str:
     logger.debug(f"Created file_key {filekey}")
     return filekey
 
+# File Checking Functions:
+def allowed_book_filename(filename):
+    if not filename.lower().endswith(".pdf"):
+        return False
+    return True
+
+def check_book_magic_bytes(file):
+    magic_bytes = file.read(5) # obtain first 5 bytes of file (magic bytes which identify file type)
+    file.seek(0) # reset file reader
+
+    if not magic_bytes == b"%PDF-": #checks magic_bytes against bytes of %PDF-
+        return False
+    return True
+
+def book_file_check(file):
+    if file.name == "": return False
+    if not allowed_book_filename(file.filename) or not check_book_magic_bytes(file):
+        return False
+    return True
+
+def cover_file_check(file):
+    if file.name == "": return False
+    if not allowed_cover_filename(file.filename) or not check_cover_magic_bytes(file):
+        return False
+    return True
+
+def allowed_cover_filename(filename):
+    if not filename.lower().endswith((".png", ".jpg")):
+        return False
+    return True
+
+def check_cover_magic_bytes(file):
+    magic_bytes = file.read(8) # obtain first 8 bytes of file, 8 needed for png
+    file.seek(0) # reset file reader
+
+    if magic_bytes.startswith(b"\x89PNG\r\n\x1a\n"): # PNG signature (8 bytes)
+        return True
+    if magic_bytes.startswith(b"\xff\xd8"):  # JPEG signature
+        return True
+    return True
+
 def main() -> None:
     pass
 
