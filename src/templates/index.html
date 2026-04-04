@@ -2,47 +2,50 @@
 {% block title %}Home Page{% endblock %}
 {% block content %}
     <main class="library_content">
-        <section class="book_list">
-            {% for book in books %}
-                <article class="book_card">
-                    <div class="book_info">
-                        <h3 class="book_title">{{book.title.title()}}</h3>
-                        <p class="book_author">Author: {{book.author.title()}}</p>
-                        <p class="book_genre">Genre: {{book.genre.title()}}</p>
-                        <p class="book_year">Date Added: {{book.date_added}}</p>
+        {% if books %}
+            <section class="book_list">
+                {% for book in books %}
+                    <article class="book_card">
+                        <div class="book_info">
+                            <h3 class="book_title">{{book.title.title()}}</h3>
+                            <p class="book_author">Author: {{book.author.title()}}</p>
+                            <p class="book_genre">Genre: {{book.genre.title()}}</p>
+                            <p class="book_year">Date Added: {{book.date_added}}</p>
 
-                        <div class="book_actions">
-                            <a class="open_button" href= "{{ url_for('open_book', id=book.id)}}">Open</a>
-                            <div class="extra_actions">
-                                <button class="extra_actions_button">
-                                    <img src="{{ url_for('static', filename='images/icons/dots.png') }}">
-                                </button>
-                                <div class="extra_actions_dropdown">
-                                    <!-- <a href="{{ url_for('update_book_page', id=book.id)}}">Update Info</a> -->
-                                    <form action="update_book" method="POST">
-                                        <input type="hidden" name="book_id" value="{{book.id}}">
-                                        <button type="submit">Update Info</button>
-                                    </form>
-                                    <form action="change_cover" method="POST" enctype="multipart/form-data" class="change_cover"> <!-- Need to revamp this feature via JS (combine all into one button) -->
-                                        <input type="hidden" name="book_id" value="{{book.id}}">
-                                        <label for="cover_file">Change Cover: </label>
-                                        <input type="file" id="cover_file" name="cover_file">
-                                        <button type="submit">Upload</button>
-                                    </form>
-                                    <form action="delete" method="POST">
-                                        <input type="hidden" name="book_id" value="{{book.id}}">
-                                        <button type="submit">Delete</button>
-                                    </form>
+                            <div class="book_actions">
+                                <a class="open_button" href= "{{ url_for('open_book', id=book.id)}}">Open</a>
+                                <div class="extra_actions">
+                                    <button class="extra_actions_button">
+                                        <img src="{{ url_for('static', filename='images/icons/dots.png') }}">
+                                    </button>
+                                    <div class="extra_actions_dropdown">
+                                        <form action="update_book" method="POST">
+                                            <input type="hidden" name="book_id" value="{{book.id}}">
+                                            <button type="submit">Update Info</button>
+                                        </form>
+                                        <form action="change_cover" method="POST" enctype="multipart/form-data" class="change_cover"> <!-- Need to revamp this feature via JS (combine all into one button) -->
+                                            <input type="hidden" name="book_id" value="{{book.id}}">
+                                            <label for="cover_file">Change Cover: </label>
+                                            <input type="file" id="cover_file" name="cover_file">
+                                            <button type="submit">Upload</button>
+                                        </form>
+                                        <form action="delete" method="POST">
+                                            <input type="hidden" name="book_id" value="{{book.id}}">
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="book_cover">
-                        <img src="{{ url_for('static', filename=book.cover_path) }}" alt="Cover of {{book.title.title()}}">
-                    </div>
-                </article>
-            {% endfor %}
-        </section>
+                        <div class="book_cover">
+                            <img src="{{ url_for('static', filename=book.cover_path) }}" alt="Cover of {{book.title.title()}}">
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <h3>No books found</h3>
+        {% endif %}
     </main>
 {% endblock %}
