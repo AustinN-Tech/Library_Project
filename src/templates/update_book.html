@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Add Book{% endblock %}
+{% block content %}
+    <main class="add_book_content">
+        <h1>Update Book Info</h1>
+        <form action="update" method="POST" class="update_book_form">
+            <div>
+                <label for="book_id">Select Book:</label>
+                <select id="book_id", name="book_id">}
+                    <option value="{{current_book.id}}">
+                        {% set short = current_book.title[:30] %}
+                        {{ short ~ ('...' if current_book.title|length > 30 else '') }} <!-- Cuts off title to '...' if too long-->
+                    </option>
+                    {% for book in books %}
+                        <option value="{{book.id}}">
+                            {% set short = book.title[:30] %}
+                            {{ short ~ ('...' if book.title|length > 30 else '') }} <!-- Cuts off title to '...' if too long-->
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="update_column">Select Column:</label>
+                <select id="update_column" name="column">
+                    <option value="">-- Choose a column --</option>
+                    <option value="Title">Title</option>
+                    <option value="Author">Author</option>
+                    <option value="Genre">Genre</option>
+                </select>
+            </div>
+            <div>
+                <label for="update_value">Enter New Value: </label>
+                <input type="text" id="update_value", name="update_value">
+            </div>
+
+            <div class="form_buttons">
+                <button type="submit">Submit</button>
+                <button type="reset">Clear</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}

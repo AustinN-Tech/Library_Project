@@ -73,9 +73,32 @@ def add_action():
 
     return render_template("add_book.html")
 
-@app.route("/update")
+"""
+Gets current book id (the book where 'Update Info' was pressed) and passes it so that
+the current book is at the top of the dropdown for 'Select Book' in the update_book page
+it also deletes it from the larger list so it doesn't end up repeating
+--> Will add JS later to revamp the update_book
+"""
+@app.route("/update_book", methods=['POST'])
 def update_book_page():
-    return render_template("update_book.html")
+    book_id = request.form["book_id"]
+    book = db.get_book_by_id(book_id)
+    all_books = db.return_all_books()
+    if book in all_books:
+        all_books.remove(book)
+    return render_template("update_book.html", books=all_books, current_book=book)
+
+@app.route("/update", methods=['POST'])
+def update_action():
+    book_id = request.form["book_id"]
+    column = request.form["column"]
+    value = request.form["update_value"]
+    book = db.get_book_by_id(book_id)
+    try:
+        db.update_book(book, column, value)
+    except Exception:
+        return "Update Failed: Error Occured"
+    return redirect(url_for("home"))
 
 @app.route("/change_cover", methods=['POST'])
 def change_cover():
