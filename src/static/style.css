@@ -1,55 +1,88 @@
 :root { /* Defining color variables */
-    --offwhite: #E3EEF4;
-    --primary_color: #F6F6F6;
-    --grey: #D4D4D4;
-    --background_color: #E6FAFC;
+    /* Core Colors */
+    --background_color: #f5f7fb; /* page background color */
+    --surface: #ffffff; /* used for cards/forms/dropdowns, etc.. */
+    --surface_offwhite: #f8fafc; /* offwhite for hover */
+    /* Border Colors */
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1; /* border for hover */
+    /* Text Colors */
+    --text: #0f172a; /* main text */
+    --text-soft: #475569; /* for paragraph text */
+    --text-muted: #64748b; /* secondary labels/info */
+    /* Accent Colors */
+    --accent: #2563eb; /* for buttons */
+    --accent-hover: #1d4ed8;
+    /* Status Colors */
+    --error: #fef2f2;
+    --success: #f0fdf4;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
 }
-body {
-    background-color: var(--background_color);
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 /* Global Font Styling */
+body {
+    margin: 0;
+    background-color: var(--background_color);
+    color: var(--text);
+    font-family: 'Epilogue', 'Montserrat', sans-serif;
+    line-height: 1.5;
+}
+
 h1, h2 {
     font-family: 'Titillium Web', 'Roberto', sans-serif;
-    font-weight: normal;
-    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin: 0;
 }
 h3, h4 {
     font-family: 'Signika Negative', 'Nunito', sans-serif;
-    font-weight: normal;
-    font-size: 1.3rem;
-    margin: 1.5em;
-    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    margin: 0;
 }
 p {
     font-family: 'Epilogue', 'Montserrat', sans-serif;
-    font-weight: normal;
-    font-size: 1.1rem;
-    margin: 1em;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text-soft);
+    margin: 0;
 }
 a { /* For info links and such */
-    font-family: 'Epilogue', 'Montserrat', sans-serif;
-    font-weight: normal;
+    font-family: inherit;
+    font-weight: 500;
     text-decoration: none;
-    color: black;
+    color: var(--text);
 }
 a:hover {
     cursor: pointer;
 }
 
 label {
-    font-family: 'Epilogue', 'Montserrat', sans-serif;
-    font-size: 1.25rem;
-    white-space: nowrap; /* So the text doesn't get squished */
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 0.25rem;
 }
 
 .top_controls {
     display: flex;
     flex-direction: column;
-    background-color: var(--primary_color);
-    border-style: solid;
-    border-color: black;
-    border-top-style: hidden;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 /* Header Bar */
@@ -57,37 +90,41 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between; /* puts items (site title and add button) on opposite sides*/
-    border-style: solid; /* solid */
-    border-right-style: hidden;
-    border-left-style: hidden;
-    border-color: black; /* Black border to better outline website structure */
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
 }
 header h1 {
+    margin: 0;
     font-size: 2rem;
-    margin-left: 1%;
+    font-weight: 600;
+    line-height: 1.1;
 }
 .add_button {
-    border-style: solid;
-    border-color: black;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 1.5rem;;
-    margin: 1em;
-    background-color: var(--offwhite);
-    padding: 0.5%;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: var(--accent);
+    color: white;
+}
+.add_button:hover {
+    background-color: var(--accent-hover);
 }
 
 .search_and_sort {
     display: flex;
     flex-direction: row;
-    margin: 1%;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 1rem;
+    padding: 1rem 1.5rem;
 }
-
 
 .search_bar form {
     display: flex;
     gap: 1rem;
-    margin: 1%;
+    flex-wrap: wrap;
 }
 
 button:hover {
@@ -100,12 +137,6 @@ button:hover {
     align-items: center;
 }
 
-/* .book_list {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-} */
 
 .book_card {
     margin: 1%;

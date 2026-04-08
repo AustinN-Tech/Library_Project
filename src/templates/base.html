@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Style Sheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +17,7 @@
         <header class="page_header">
             <h1>Library Project</h1>
 
-            <a class="add_button" href="{{url_for('add_book_page')}}">Add (+)</a>
+            <a class="add_button" href="{{url_for('add_book_page')}}">Add Book</a>
         </header>
 
         <div class="search_and_sort">
