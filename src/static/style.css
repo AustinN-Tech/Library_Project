@@ -125,6 +125,7 @@ header h1 {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 button:hover {
@@ -135,31 +136,32 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
 }
 
 
 .book_card {
-    margin: 1%;
+    width: 100%;
+    max-width: 1000px;
     display: grid;
     grid-template-columns: 1fr 40%; /* Cover takes 40% of code, info takes rest */
     /* align-items: stretch; */
-    gap: 2rem;
-    border: black;
-    border-style: solid;
-    border-radius: 8px;
-    background-color: var(--primary_color);
+    gap: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background-color: var(--surface);
+    box-shadow: var(--shadow-sm);
 }
 
 .book_cover {
     width: 100%;
     height: 100%;
-    max-width: 30rem;
 }
 
 .book_cover img {
     width: 100%; /* takes 100% of container (book_cover container) */
     height: 100%;
-    border-left: 3px solid black;
     object-fit: cover; /* object should cover container as it resizes */
     display: block; /* takes full width available */
 }
@@ -167,16 +169,20 @@ button:hover {
 .book_info {
     display: flex;
     flex-direction: column;
+    padding: 1.25rem 1.25rem 1.25rem 0;
+    gap: 0.5rem;
 }
 
 .book_info h3 {
-    font-size: 2.5rem;
-    margin: 1em;
+    font-size: 1.5rem;
+    margin: 0;
+    line-height: 1.2;
 }
 
 .book_info p {
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin-top: 0;
+    color:var(--text-soft)
 }
 
 .book_actions {
@@ -184,68 +190,89 @@ button:hover {
     display: flex;
     flex-direction: row;
     justify-content: space-between; /* puts 3 dot menu and open button on opposite sides */
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
 }
 
 .open_button {
-    width: 25%;
-    background-color: var(--offwhite);
-    margin: 1rem;
-    font-size: 1.5rem;
-    border-width: 2px;
-    border-radius: 8px;
-    border-color: black;
-    border-style: solid;
     display: inline-block;
-    padding: 0.5%;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    min-width: 120px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--surface_offwhite);
+    color: var(--text);
 }
-
-.extra_actions_button img {
-    width: 1.5rem;
-    height: 1.5rem;
+.open_button:hover {
+    background-color: var(--surface);
+    border-color: var(--accent);
 }
 
 .extra_actions_button {
-    width: 10%;
-    background: none;
-    border: none;
+     width: 42px;
+    height: 42px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
+.extra_actions_button:hover {
+    background-color: var(--surface_offwhite);
+    border-color: var(--border-strong);
+}
+.extra_actions_button img {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
 
 .extra_actions {
     position: relative; /* allows dropdown (which is absolute) to be position relative to it */
-    margin: 1rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 42px;
+    height: 42px;
 }
 
 .extra_actions_dropdown {
     display: none; /* hides the dropdown */
     position: absolute; /* takes it out of normal flow */
     right: 0; /* aligns along right edge */
-    top: 100%; /* places dropdown just below parent, 100% = height of parent */
-    min-width: 10rem;
-    background: var(--offwhite);
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 0.5rem 0;
+    top: calc(100% + 0.5rem); /* places dropdown just below parent, 100% = height of parent */
+    min-width: 12rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: var(--shadow-md);
+    z-index: 20;
 }
 
 .extra_actions_dropdown a,
 .extra_actions_dropdown button {
     display: block; /* each item takes full width, stacks vertically */
     width: 100%; /* takes up 100% of container width */
-    padding: 0.75rem 1rem;
-    background: none;
+    padding: 0.75rem 0.9rem;
+    background: transparent;
     border: none;
+    border-radius: 8px;
     text-align: left;
     font: inherit;
+    color: var(--text);
     cursor: pointer;
 }
 
 .extra_actions_dropdown a:hover,
 .extra_actions_dropdown button:hover {
-    background: var(--primary_color);
+    background: var(--surface_offwhite);
 }
 
 .extra_actions:hover .extra_actions_dropdown {
@@ -254,59 +281,59 @@ button:hover {
 
 .change_cover {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 1%;
-    padding: 4%;
+    gap: 0.5rem;
+    padding: 0.5rem 0.25rem 0.25rem;
 }
 
 .change_cover label {
-    font-size: 1rem;
-}
-
-.extra_actions_dropdown a {
-    font-family: 'Epilogue', 'Montserrat', sans-serif;
-}
-
-.extra_actions_dropdown form button {
-    font-family: 'Epilogue', 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font: inherit;
 }
 
 .add_book_content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid black;
-    margin: 5%;
-    margin-left: 30%;
-    margin-right: 30%;
-    border-radius: 8px;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background-color: var(--surface);
+    box-shadow: var(--shadow-sm);
 }
 
 .add_book_content h1 {
     font-size: 2rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
-.add_book_form, .update_book_form {
-    margin-bottom: 2%;
+.add_book_form, 
+.update_book_form {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 1.5rem;
 }
 
 .form_buttons {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
 }
 
 .flash {
+    max-width: 700px;
     padding: 1rem;
     margin: 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 500;
     text-align: center;
+    box-shadow: var(--shadow-sm);
 }
 
 .flash.success {
