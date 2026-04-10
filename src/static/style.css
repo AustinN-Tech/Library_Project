@@ -128,6 +128,34 @@ header h1 {
     align-items: center;
 }
 
+.search_bar input, select { 
+    padding: 0.55rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--surface);
+    color: var(--text);
+    font-size: .75rem;
+}
+
+.search_bar button {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.50rem .75rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--surface_offwhite);
+    color: var(--text);
+}
+
+.search_bar button:hover {
+    background-color: var(--surface);
+    border-color: var(--accent);
+}
+
 button:hover {
     cursor: pointer;
 }
@@ -324,6 +352,64 @@ button:hover {
     justify-content: center;
     gap: 1rem;
     padding-top: 0.5rem;
+}
+
+.add_book_form > div:not(.form_buttons), /* selecting direct div child that are not class=form_buttons */
+.update_book_form > div:not(.form_buttons) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.add_book_form label,
+.update_book_form label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-soft);
+}
+
+.add_book_form input,
+.add_book_form select,
+.update_book_form input,
+.update_book_form select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--surface);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.form_buttons button {
+    min-width: 110px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: var(--surface_offwhite);
+    color: var(--text);
+}
+
+.form_buttons button[type="submit"] {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.form_buttons button[type="submit"]:hover {
+    background-color: var(--accent-hover);
+}
+
+.form_buttons button[type="reset"]:hover {
+    background-color: var(--surface);
+    border-color: var(--border-strong);
+}
+
+.file_select input { /* getting rid of input bar for file select */
+    border: none;
+    background-color: var(--surface);
 }
 
 .flash {
