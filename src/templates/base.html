@@ -20,11 +20,13 @@
             <a class="add_button" href="{{url_for('add_book_page')}}">Add Book</a>
         </header>
 
-        <div class="search_and_sort">
-            <section class="search_bar"> <!-- Search -->
-                <form action="search" method="POST">
+        <section class="search_and_sort">
+            <form action="search" method="POST">
+                <div class="search_bar">
                     <label for="search_input">Search books:</label>
                     <input type="text" id="search_input" name="search_input">
+                </div>
+                <div class="sort_bar">
                     <label>Sort By:</label>
                     <select name="column">
                         <option value="title">Title</option>
@@ -37,9 +39,9 @@
                         <option value ="DESC">Descending</option>
                     </select>
                     <button type="submit">Submit</button>
-                </form>
-            </section>
-        </div>
+                </div>
+            </form>
+        </section>
     </section>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

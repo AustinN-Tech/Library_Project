@@ -7,10 +7,12 @@
                 {% for book in books %}
                     <article class="book_card">
                         <div class="book_info">
-                            <h3 class="book_title">{{book.title.title()}}</h3>
-                            <p class="book_author">Author: {{book.author.title()}}</p>
-                            <p class="book_genre">Genre: {{book.genre.title()}}</p>
-                            <p class="book_year">Date Added: {{book.date_added}}</p>
+                            <div class="book_text">
+                                <h3 class="book_title">{{book.title.title()}}</h3>
+                                <p class="book_author">Author: {{book.author.title()}}</p>
+                                <p class="book_genre">Genre: {{book.genre.title()}}</p>
+                                <p class="book_year">Date Added: {{book.date_added}}</p>
+                            </div>
 
                             <div class="book_actions">
                                 <a class="open_button" href= "{{ url_for('open_book', id=book.id)}}">Open</a>
