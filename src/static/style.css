@@ -99,6 +99,11 @@ header h1 {
     font-weight: 600;
     line-height: 1.1;
 }
+
+#home_button:hover {
+    cursor: pointer;
+}
+
 .add_button {
     padding: 0.75rem 1rem;
     border: 1px solid var(--border);
@@ -284,7 +289,7 @@ button:hover {
 }
 
 .extra_actions_dropdown {
-    display: none; /* hides the dropdown */
+    display: block;
     position: absolute; /* takes it out of normal flow */
     right: 0; /* aligns along right edge */
     top: 100%; /* places dropdown just below parent, 100% = height of parent*/
@@ -316,9 +321,6 @@ button:hover {
     background: var(--surface_offwhite);
 }
 
-.extra_actions:hover .extra_actions_dropdown {
-    display: block;
-}
 
 .change_cover {
     display: flex;
@@ -472,4 +474,8 @@ button:hover {
     .book_info p {
         font-size: 1.5rem;
     }
+}
+
+.hidden {
+    display: none;
 }

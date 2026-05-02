@@ -20,7 +20,7 @@
                                     <button class="extra_actions_button">
                                         <img src="{{ url_for('static', filename='images/icons/dots.png') }}">
                                     </button>
-                                    <div class="extra_actions_dropdown">
+                                    <div class="extra_actions_dropdown hidden">
                                         <form action="update_book" method="POST">
                                             <input type="hidden" name="book_id" value="{{book.id}}">
                                             <button type="submit">Update Info</button>
@@ -28,8 +28,7 @@
                                         <form action="change_cover" method="POST" enctype="multipart/form-data" class="change_cover"> <!-- Need to revamp this feature via JS (combine all into one button) -->
                                             <input type="hidden" name="book_id" value="{{book.id}}">
                                             <label for="cover_file">Change Cover: </label>
-                                            <input type="file" id="cover_file" name="cover_file">
-                                            <button type="submit">Upload</button>
+                                            <input type="file" class="cover_file" name="cover_file">
                                         </form>
                                         <form action="delete" method="POST">
                                             <input type="hidden" name="book_id" value="{{book.id}}">

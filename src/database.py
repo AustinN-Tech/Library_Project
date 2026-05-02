@@ -9,7 +9,7 @@ logger = initialize_logging() # setting logging
 
 """
 ## Database Table:
-id - good practice, assigns an integer to each item, increments
+id - assigns an integer to each item, increments
 title - title of book
 author - author of book
 genre - genre (category) of book
@@ -42,7 +42,7 @@ class Book:
     original_filename: str
     author: str = 'Unknown'
 
-def row_to_book(row) -> Book:
+def row_to_book(row) -> Book: # converts db entry row to book object
     return Book(
         id = row[0],
         title = row[1],
@@ -54,19 +54,19 @@ def row_to_book(row) -> Book:
         original_filename= row[7]
     )
 
-def db_connection_handling(func):
+def db_connection_handling(func): # handles opening and closing db connection for functions
     @functools.wraps(func) # preveres original function metadata
     def wrapper(*args, **kwargs):
         conn = sqlite3.connect("library.db")
         try:
-            return func(conn, *args, **kwargs)
-        finally:
+            return func(conn, *args, **kwargs) # passes cursor to each function
+        finally: # closes db connection at end
             conn.close()
     return wrapper
 
 @error_handling
 @db_connection_handling
-def add_book(conn: sqlite3.Connection, title: str, author: str, genre: str, filename: str, path: Path) -> None:
+def add_book(conn: sqlite3.Connection, title: str, author: str, genre: str, filename: str, path: Path) -> None: # creates new book (creates filepath, cover filepath, db entry)
     c = conn.cursor()
 
     file_key = create_book_pdf(path)
@@ -79,7 +79,7 @@ def add_book(conn: sqlite3.Connection, title: str, author: str, genre: str, file
 
 @error_handling
 @db_connection_handling
-def delete_book(conn: sqlite3.Connection,book: Book) -> None:
+def delete_book(conn: sqlite3.Connection,book: Book) -> None: # deletes a single entry from sqlite db
     c = conn.cursor()
 
     with conn:
@@ -90,7 +90,7 @@ def delete_book(conn: sqlite3.Connection,book: Book) -> None:
 
 @error_handling
 @db_connection_handling
-def delete_all_db(conn: sqlite3.Connection) -> None:
+def delete_all_db(conn: sqlite3.Connection) -> None: # deletes all entries from sqlite db
     c = conn.cursor()
 
     with conn:
@@ -107,7 +107,7 @@ def full_delete_all_db(conn: sqlite3.Connection) -> None:
         c.execute("SELECT * FROM books")
         results = c.fetchall()
         if results:
-            for row in results:
+            for row in results: # individual full delete each row
                 book = row_to_book(row)
                 full_delete(book)
             print("All books fully deleted.")
@@ -128,7 +128,7 @@ def update_book(conn: sqlite3.Connection, book: Book, column: str, value: str) -
 
     with conn:
         c.execute(f"UPDATE books set {column} = (?) WHERE id = (?)", (value, book.id))
-        print(f"Updated {book.title.capitalize()}'s {column} with new value of {value}")
+        print(f"Updated {book.title.title()}'s {column} with new value of {value}")
         logger.info(f"Updated Book '{book.title}', updated {column} with new value of {value}")
 
 @error_handling
@@ -193,7 +193,7 @@ def partial_search(conn: sqlite3.Connection, title: str) -> list[Book]:
         c.execute("SELECT * FROM books WHERE title LIKE ?", (search,))
         database_results = c.fetchall()
 
-        if not database_results:
+        if not database_results: # if no results found, return empty
             logger.info(f"partial_search(): {search} -> NOT FOUND")
             return search_results # would be empty list
         
@@ -233,7 +233,7 @@ def filter_books(conn: sqlite3.Connection, column: str, value: str | None, order
 
 @error_handling
 @db_connection_handling
-def global_search(conn: sqlite3.Connection, column: str, value: str | None, order: str) -> list[Book]:
+def global_search(conn: sqlite3.Connection, column: str, value: str | None, order: str) -> list[Book]: # searches by title, author, and genre at once
     search_results = [] # create empty list to store results
 
     column = validate_column(column)
@@ -243,11 +243,11 @@ def global_search(conn: sqlite3.Connection, column: str, value: str | None, orde
     
     c = conn.cursor()
 
-    if value:
+    if value: # use value to each in title, author, and genre
         query = f"SELECT * FROM books WHERE title LIKE (?) OR author LIKE (?) OR genre LIKE (?) ORDER BY {column} {order}"
         params = (f"%{value}%", f"%{value}%", f"%{value}%")
         c.execute(query, params)
-    else:
+    else: # if no value passed, just order books
         query = (f"SELECT * FROM books ORDER BY {column} {order}")
         c.execute(query)
 
@@ -259,7 +259,7 @@ def global_search(conn: sqlite3.Connection, column: str, value: str | None, orde
     return search_results
 
 @error_handling
-def full_delete(book: Book) -> None:
+def full_delete(book: Book) -> None: # to make sure all parts of book entry are deleted (db entry, pdf file, cover file)
     delete_book_file(book.file_key) # delete filepath (now fully deleted)
     delete_book_cover(book.cover_path) # delete cover file
     delete_book(book) # delete from SQL db

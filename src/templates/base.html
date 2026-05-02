@@ -15,7 +15,9 @@
 <body>
     <section class="top_controls">
         <header class="page_header">
-            <h1>Library Project</h1>
+            <a id="home_button" href="{{url_for('home')}}">
+                <h1>Library Project</h1>
+            </a>
 
             <a class="add_button" href="{{url_for('add_book_page')}}">Add Book</a>
         </header>
@@ -52,5 +54,6 @@
     {% endwith %}
     {% block content %}
     {% endblock %}
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
 </body>
 </html>
