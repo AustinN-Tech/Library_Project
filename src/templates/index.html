@@ -27,8 +27,9 @@
                                         </form>
                                         <form action="change_cover" method="POST" enctype="multipart/form-data" class="change_cover"> <!-- Need to revamp this feature via JS (combine all into one button) -->
                                             <input type="hidden" name="book_id" value="{{book.id}}">
-                                            <label for="cover_file">Change Cover: </label>
+                                            <!-- <label for="cover_file">Change Cover: </label> -->
                                             <input type="file" class="cover_file" name="cover_file">
+                                            <button type="button" class="cover_button">Change Cover</button>
                                         </form>
                                         <form action="delete" method="POST">
                                             <input type="hidden" name="book_id" value="{{book.id}}">

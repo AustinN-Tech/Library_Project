@@ -316,6 +316,10 @@ button:hover {
     cursor: pointer;
 }
 
+.cover_file {
+    display: none;
+}
+
 .extra_actions_dropdown a:hover,
 .extra_actions_dropdown button:hover {
     background: var(--surface_offwhite);
