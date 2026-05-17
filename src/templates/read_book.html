@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Library Project</h1>
+
+    <div class="controls">
+        <button class="previous"> < Previous</button>
+        <button class="next"> Next > </button>
+        <p class="page_number">Page 1 of 1</p>
+    </div>
+
+    <canvas></canvas>
+
+    <script>const pdf_URL = "{{ url_for('open_pdf', id=book.id)}}";</script> <!-- Obtain flask URL for PDF to pass to JS-->
+    <script type="module" src="{{ url_for('static', filename='read_book.js')}}"></script>
+</body>
+</html>

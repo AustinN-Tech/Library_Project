@@ -32,8 +32,8 @@ def search():
         book.date_added = datetime.fromtimestamp(book.date_added).strftime('%Y-%m-%d')
     return render_template("index.html", books=search_results)
 
-@app.route("/books/<id>")
-def open_book(id):
+@app.route("/books/<id>/pdf")
+def open_pdf(id):
     book = db.get_book_by_id(id)
     path = return_pdf_file_path(book.file_key)
     return send_file(path_or_file=path, download_name=book.original_filename)
@@ -132,6 +132,17 @@ def change_cover():
 
     flash("Cover Updated", "success")
     return redirect(url_for("home"))
+
+
+""" Read a book in the PDF viewer:
+takes id and title as arguments, 
+    - id is needed to retrieve book object 
+    - title is there just to show in the URL
+"""
+@app.route("/read/<id>/<title>")
+def read_book(id, title):
+    book = db.get_book_by_id(id)
+    return render_template("read_book.html", book=book)
 
 if __name__ == "__main__":
     app.run(debug=True)

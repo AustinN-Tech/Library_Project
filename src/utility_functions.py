@@ -52,12 +52,10 @@ def get_author() -> str:
         author = "unknown"
     return author
 
-# in progress
 def get_value() -> str:
     value = input("Enter value: ").strip().lower()
     return value
 
-# done
 def get_order() -> str:
     orders = {"1": "ASC", "2": "DESC"}
     print("Select Order\nAscending [1]\nDescending [2]")
@@ -67,7 +65,6 @@ def get_order() -> str:
         idx = input("Enter Corresponding Number: ").strip()
     return orders[idx]
 
-# in progress
 def get_column() -> str:
     column = input("Sort by:\n Title [1]\n Author [2]\n Genre [3]\n Exit to Menu [0]\nEnter Number: ").strip()
     while column not in ["1" ,"2", "3", "0"]:
