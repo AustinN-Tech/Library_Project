@@ -4,17 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&family=Signika+Negative:wght@300..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Library Project</h1>
+    <header class="page_header">
+        <a id="home_button" href="{{url_for('home')}}">
+            <h1>Library Project</h1>
+        </a>
+    </header>
 
-    <div class="controls">
+    <main class="book_viewer">
+
+        <div class="controls">
         <button class="previous"> < Previous</button>
         <button class="next"> Next > </button>
         <p class="page_number">Page 1 of 1</p>
-    </div>
+        </div>
 
-    <canvas></canvas>
+        <div class="canvas_container">
+            <canvas></canvas>
+        </div>
+    </main>
 
     <script>const pdf_URL = "{{ url_for('open_pdf', id=book.id)}}";</script> <!-- Obtain flask URL for PDF to pass to JS-->
     <script type="module" src="{{ url_for('static', filename='read_book.js')}}"></script>

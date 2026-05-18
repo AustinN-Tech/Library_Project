@@ -483,3 +483,46 @@ button:hover {
 .hidden {
     display: none;
 }
+
+.book_viewer {
+    display: flex;
+    flex-direction: column;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;;
+    padding: 1rem 1.5rem;
+}
+
+.previous,
+.next {
+    display: inline-block;
+    text-align: center;
+    padding: 0.5rem .75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--surface_offwhite);
+    color: var(--text);
+}
+
+.previous:hover,
+.next:hover {
+    background-color: var(--surface);
+    border-color: var(--accent);
+}
+
+.page_number {
+    padding: 0.5rem .75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.canvas_container {
+    display: flex;
+    justify-content: center;
+}
