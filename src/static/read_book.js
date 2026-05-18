@@ -4,15 +4,16 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 
 // Defining Page/PDF Variables:
 let pdf_doc = null;
-let page_number = 1;
+let page_counter = 1; // keeps track of current page number
 const min_page = 1;
 let max_page = 1;
-let scale = 1.5; // controls zoom of PDF
+let scale = 1.25; // controls zoom of PDF
 
 let canvas = document.querySelector("canvas"); // html drawing surface, pdf.js draws pdfs onto canvas
 const context = canvas.getContext('2d'); // "drawing tool" for the canvas
 
-let page_text = document.querySelector(".page_number");
+let page_num = document.querySelector(".page_number") // shows current page num on webpage
+let page_max = document.querySelector(".page_max");
 const previous_button = document.querySelector(".previous");
 const next_button = document.querySelector(".next");
 
@@ -22,7 +23,7 @@ pdfjsLib.getDocument({ url: pdf_URL}).promise.then((pdf) => { // loading PDF doc
 
     pdf_doc = pdf; // load pdf into variable to reuse
     max_page = pdf.numPages;
-    load_page(page_number);
+    load_page(page_counter);
 });
 
 function load_page(page_number) {
@@ -42,19 +43,34 @@ function load_page(page_number) {
         let renderTask = page.render(renderContext); // draws PDF page on canvas
         renderTask.promise.then(() => { // render takes time, must be a promise
             console.log('Page rendered.');
-            page_text.innerHTML = `Page ${page_number} of ${max_page}`; // updates page counter
+            page_num.placeholder = `${page_number}`; // updates page counter
+            page_max.textContent = `/ ${max_page}`;
         });
     }); 
 }
 
 previous_button.addEventListener("click", () => {
-    if (page_number > min_page) {
-        load_page(--page_number);
+    if (page_counter > min_page) {
+        load_page(--page_counter);
+        page_num.value = ""; // get rid of inputted value so placeholder (which tracks the page counter) is visible
     }
 });
 
 next_button.addEventListener("click", () => {
-    if (page_number < max_page) {
-        load_page(++page_number);
+    if (page_counter < max_page) {
+        load_page(++page_counter);
+        page_num.value = "";
     }
 });
+
+page_num.addEventListener("keydown", () => { // allows users to jump to requested page number
+    if (event.key === "Enter") {
+        let entered_page = Number(page_num.value);
+
+        if ((entered_page >= 1) && (entered_page <= max_page)) {
+            load_page(entered_page);
+            page_num.placeholder = `${entered_page}`;
+            page_counter = entered_page; // update page_counter
+        }
+    }
+})

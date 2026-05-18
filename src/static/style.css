@@ -515,11 +515,23 @@ button:hover {
     border-color: var(--accent);
 }
 
-.page_number {
-    padding: 0.5rem .75rem;
+.page_max {
+    padding: 0.5rem;
+    padding-left: 0;
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--text);
+}
+
+.page_number {
+    padding: 0.25rem .25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--surface);
+    color: var(--text);
+    font-size: .75rem;
+    width: 2rem;
+    text-align: center;
 }
 
 .canvas_container {
