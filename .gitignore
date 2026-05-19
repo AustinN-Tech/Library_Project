@@ -3,6 +3,5 @@ __pycache__
 /book_pdfs
 *.db
 *.log
-*.pdf
 *.jpg
-*.png
+/src/static/images/book_covers

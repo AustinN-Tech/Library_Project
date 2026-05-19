@@ -165,6 +165,10 @@ button:hover {
     cursor: pointer;
 }
 
+.not_found {
+    padding: 0.5rem;
+}
+
 .book_list {
     display: grid;
     grid-template-columns: 1fr 1fr;

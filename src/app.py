@@ -1,6 +1,6 @@
 from flask import Flask, render_template, send_file, request, redirect, url_for, flash
 from datetime import datetime # for formatting time
-from storage import return_pdf_file_path, change_cover_file, BOOK_DIR, COVER_DIR
+from storage import return_pdf_file_path, change_cover_file, create_book_directory, BOOK_DIR, COVER_DIR
 from utility_functions import initialize_logging, book_file_check, cover_file_check
 import database as db
 import os
@@ -70,6 +70,7 @@ def add_action():
         flash("Error: Invalid File", "error")
         return render_template("add_book.html")
     
+    create_book_directory() # makes sure directory is made before saving
     path = Path(BOOK_DIR) / file.filename
     file.save(path)
 
