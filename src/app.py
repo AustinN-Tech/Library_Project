@@ -18,6 +18,10 @@ def test():
 @app.route("/home")
 def home():
     books = db.return_all_books()
+
+    if books is None:
+        books = [] # otherwise will throw an error, the html jinja breaks on None so it must be an empty list
+
     for book in books: # formatting time for display
         book.date_added = datetime.fromtimestamp(book.date_added).strftime('%Y-%m-%d')
     return render_template("index.html", books=books)
@@ -145,4 +149,5 @@ def read_book(id, title):
     return render_template("read_book.html", book=book)
 
 if __name__ == "__main__":
+    db.create_db()
     app.run(debug=True)

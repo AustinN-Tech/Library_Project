@@ -18,18 +18,23 @@ file_key - filename in server storage, never changed once added
 original_filename - user inputted filename, used for display and readability
 """
 
-# c.execute("""
-# CREATE TABLE IF NOT EXISTS books (
-#     id INTEGER PRIMARY KEY AUTOINCREMENT,
-#     title TEXT UNIQUE NOT NULL,
-#     author TEXT NOT NULL DEFAULT 'Unknown',
-#     genre TEXT NOT NULL,
-#     date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
-#     file_key TEXT NOT NULL UNIQUE,
-#     cover_path TEXT NOT NULL,
-#     original_filename TEXT NOT NULL
-# )
-# """)
+def create_db():
+    conn = sqlite3.connect("library.db")
+    c = conn.cursor()
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT UNIQUE NOT NULL,
+        author TEXT NOT NULL DEFAULT 'Unknown',
+        genre TEXT NOT NULL,
+        date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
+        file_key TEXT NOT NULL UNIQUE,
+        cover_path TEXT NOT NULL,
+        original_filenameS TEXT NOT NULL
+    )
+    """)
+    conn.commit()
+    conn.close()
 
 @dataclass
 class Book:
