@@ -18,8 +18,10 @@ file_key - filename in server storage, never changed once added
 original_filename - user inputted filename, used for display and readability
 """
 
+DB_PATH = BASE_DIR / "library.db"
+
 def create_db():
-    conn = sqlite3.connect("library.db")
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("""
     CREATE TABLE IF NOT EXISTS books (
@@ -62,7 +64,7 @@ def row_to_book(row) -> Book: # converts db entry row to book object
 def db_connection_handling(func): # handles opening and closing db connection for functions
     @functools.wraps(func) # preveres original function metadata
     def wrapper(*args, **kwargs):
-        conn = sqlite3.connect("library.db")
+        conn = sqlite3.connect(DB_PATH)
         try:
             return func(conn, *args, **kwargs) # passes cursor to each function
         finally: # closes db connection at end

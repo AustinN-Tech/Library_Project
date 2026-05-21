@@ -457,33 +457,6 @@ button:hover {
     border: 1px solid #f5c2c0;
 }
 
-@media screen and (max-width: 1000px) { /* switch to flex for book list with smaller screens/viewing */
-    .book_list {
-        display: flex;
-        flex-direction: column;
-    }
-    .book_cover {
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-        aspect-ratio: auto;
-    }
-    .book_cover img {
-        width: 100%; /* takes 100% of container (book_cover container) */
-        height: 100%;
-        object-fit: cover; /* object should cover container as it resizes */
-        display: block; /* takes full width available */
-    }
-}
-@media screen and (min-width: 650px) and (max-width: 1000px) {
-    .book_info h3 {
-        font-size: 2rem;
-    }
-    .book_info p {
-        font-size: 1.5rem;
-    }
-}
-
 .hidden {
     display: none;
 }
@@ -491,6 +464,7 @@ button:hover {
 .book_viewer {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .controls {
@@ -541,4 +515,41 @@ button:hover {
 .canvas_container {
     display: flex;
     justify-content: center;
+    height: auto;
+    width: 60vw;
+}
+
+
+/* Media Queries for Different Devices */
+@media screen and (max-width: 1000px) { /* switch to flex for book list with smaller screens/viewing */
+    .book_list {
+        display: flex;
+        flex-direction: column;
+    }
+    .book_cover {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        aspect-ratio: auto;
+    }
+    .book_cover img {
+        width: 100%; /* takes 100% of container (book_cover container) */
+        height: 100%;
+        object-fit: cover; /* object should cover container as it resizes */
+        display: block; /* takes full width available */
+    }
+}
+@media screen and (min-width: 650px) and (max-width: 1000px) {
+    .book_info h3 {
+        font-size: 2rem;
+    }
+    .book_info p {
+        font-size: 1.5rem;
+    }
+}
+@media screen and (max-width: 850px) {
+    .canvas_container {
+        height: 80vh;
+        width: auto;
+    }
 }
