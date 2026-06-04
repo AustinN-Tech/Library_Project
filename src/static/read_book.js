@@ -107,6 +107,22 @@ next_button.addEventListener("click", () => {
     }
 });
 
+// Arrow Key Navigation
+document.addEventListener("keydown", () => {
+    if (event.key === "ArrowRight") {
+        if (page_counter < max_page) {
+            load_page(++page_counter);
+            page_num.value = "";
+        }
+    }
+    else if (event.key === "ArrowLeft") {
+        if (page_counter > min_page) {
+            load_page(--page_counter);
+            page_num.value = ""; 
+        }
+    }
+});
+
 /*
 NOTE: bug found if input contains letters and numbers, it will default to NaN and break the PDF page loading via previous/next buttons.
 */
