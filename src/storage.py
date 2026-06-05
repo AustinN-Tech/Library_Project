@@ -1,7 +1,7 @@
 import os
 import fitz # for obtaining cover path (first page of PDF)
 from pathlib import Path
-from utility_functions import create_file_key, error_handling, initialize_logging
+from src.utility_functions import create_file_key, error_handling, initialize_logging
 from shutil import copy2
 
 BASE_DIR = Path(__file__).resolve().parent.parent # takes the absolute path of the parent folder of code file

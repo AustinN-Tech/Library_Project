@@ -1,8 +1,8 @@
 from flask import Flask, render_template, send_file, request, redirect, url_for, flash
 from datetime import datetime # for formatting time
-from storage import return_pdf_file_path, change_cover_file, create_book_directory, BOOK_DIR, COVER_DIR
-from utility_functions import initialize_logging, book_file_check, cover_file_check
-import database as db
+from src.storage import return_pdf_file_path, change_cover_file, create_book_directory, BOOK_DIR, COVER_DIR
+from src.utility_functions import initialize_logging, book_file_check, cover_file_check
+import src.database as db
 import os
 from pathlib import Path
 
@@ -148,7 +148,3 @@ takes id and title as arguments,
 def read_book(id, title):
     book = db.get_book_by_id(id)
     return render_template("read_book.html", book=book)
-
-if __name__ == "__main__":
-    db.create_db()
-    app.run(debug=True)

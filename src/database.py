@@ -1,9 +1,8 @@
 import sqlite3
 import functools
 from dataclasses import dataclass
-# package the code? <-- learn how to do this
-from utility_functions import *
-from storage import *
+from src.utility_functions import *
+from src.storage import *
 
 logger = initialize_logging() # setting logging
 
