@@ -11,19 +11,16 @@ app.secret_key = os.urandom(24)
 
 logger = initialize_logging() # setting logging
 
-@app.route("/test")
-def test():
-    return render_template("test.html")
-
-@app.route("/home")
+@app.route("/")
 def home():
-    books = db.return_all_books()
+    books = db.global_search("title", None, "ASC") # sort books by title alphabetically
 
     if books is None:
         books = [] # otherwise will throw an error, the html jinja breaks on None so it must be an empty list
 
     for book in books: # formatting time for display
         book.date_added = datetime.fromtimestamp(book.date_added).strftime('%Y-%m-%d')
+
     return render_template("index.html", books=books)
 
 @app.route("/search", methods=['POST'])
