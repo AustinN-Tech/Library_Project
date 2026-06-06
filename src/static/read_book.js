@@ -20,7 +20,7 @@ const next_button = document.querySelector(".next");
 
 const canvas_container = document.querySelector(".canvas_container");
 
-const mobile_query = window.matchMedia("(max-width:850px)");
+const mobile_query = window.matchMedia("(max-width: 1024px)");
 
 pdfjsLib.getDocument({ url: pdf_URL}).promise // loading PDF doc takes time, must be a promise
     .then(
@@ -74,6 +74,10 @@ function load_page(page_number) {
         }
     );
 }
+
+window.addEventListener("resize", () => { // Dynamically rerenders upon window resizing
+    load_page(page_counter);
+})
 
 function scale_viewport_mobile(canvas_container, unscaled_viewport, page) {
     console.log("Scaling mobile...")

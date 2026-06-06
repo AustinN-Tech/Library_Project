@@ -31,7 +31,7 @@ def create_db():
         date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
         file_key TEXT NOT NULL UNIQUE,
         cover_path TEXT NOT NULL,
-        original_filenameS TEXT NOT NULL
+        original_filename TEXT NOT NULL
     )
     """)
     conn.commit()

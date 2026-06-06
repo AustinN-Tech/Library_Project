@@ -35,7 +35,7 @@ Read your favorite books on your laptop, desktop, or even your tablet on your be
 ### Raspberry Pi Deployment
 ...
 
-## Future Features
+### Future Features
 - [x] Upload and search books
 - [x] Built in PDF reader
 - [ ] Page Saving

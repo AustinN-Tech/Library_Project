@@ -183,7 +183,7 @@ button:hover {
     max-width: 1000px;
     display: grid;
     /* min-height: 400px; */
-    grid-template-columns: 1fr 40%; /* Cover takes 40% of code, info takes rest */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 40%); /* Cover takes 40% of code, info takes rest; setting minimum and max values for both columns */
     /* align-items: stretch; */
     gap: 1.5rem;
     border: 1px solid var(--border);
@@ -547,9 +547,14 @@ button:hover {
         font-size: 1.5rem;
     }
 }
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1024px) {
     .canvas_container {
         height: 80vh;
         width: auto;
+    }
+}
+@media screen and (max-width: 650px) {
+    .search_and_sort { /* So the sort bar on mobile devices stays as one entire line*/
+        padding: 1rem 1rem; /* slightly shrinking horizontal padding from 1.5rem to 1rem so everything can fit together on smaller screens */
     }
 }
