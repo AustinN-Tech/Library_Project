@@ -59,13 +59,21 @@ This allows other devices on the same local network to access the application, l
 Library Project can be run on a host computer (such as a raspberry pi) for other devices on the network to access or it can be run locally on a single computer.  
 Read your favorite books on your laptop, desktop, or even your tablet on your bed.
 
-![Screenshot 1: Laptop View, home screen](placeholder.jpeg)
+### Laptop Viewing:
 
-![Screenshot 2: Laptop View, add book](placeholder.jpeg)
+![Screenshot 1: Laptop View, home screen](src/static/images/screenshots/laptop_home_view.png)
 
-![Screenshot 3: Mobile View, home screen](placeholder.jpeg)
+![Screenshot 2: Laptop View, add book](src/static/images/screenshots/laptop_add_book.png)
 
-![Screenshot 4: Mobile View, read book](placeholder.jpeg)
+![Screenshot 3: Laptop View, read book](src/static/images/screenshots/laptop_read_book.png)
+
+### Mobile View:
+
+![Screenshot 4: Mobile View, home screen](src/static/images/screenshots/mobile_home_view.png)
+
+### Tablet View:
+
+![Screenshot 5: Tablet View, read book](src/static/images/screenshots/ipad_read_book.png)
 
 Note: This project was designed for personal devices or small local networks, it is not designed to be publicly deployed.
 
