@@ -11,18 +11,18 @@ genres = ["Fiction", "Non-Fiction", "Fantasy", "Mystery / Thriller", "Sci-Fi",
 
 allowed_columns = {"title": "title","author":"author","genre": "genre","date_added": "date_added",}
 
-def initialize_logging():
+def initialize_logging(name: str):
     log_file = "app_log.log"
     logging.basicConfig(
         format='%(asctime)s - %(levelname)s: %(message)s', 
         filename=log_file, 
         filemode='w', 
     level=logging.DEBUG)
-    logger = logging.getLogger(__name__)
-    logger.debug("Logger initialized in %s.py", __name__)
+    logger = logging.getLogger(name)
+    logger.debug(f"Logger initialized in {name}.py")
     return logger
 
-logger = initialize_logging()
+logger = initialize_logging(__name__)
 
 def error_handling(func): #error handling logic decorator
     @functools.wraps(func) # preveres original function metadata

@@ -9,7 +9,7 @@ BOOK_DIR = BASE_DIR / "book_pdfs"
 STATIC_DIR = BASE_DIR / "src" / "static"
 COVER_DIR = STATIC_DIR / "images" / "book_covers"
 
-logger = initialize_logging() # setting logging
+logger = initialize_logging(__name__) # setting logging
 
 @error_handling
 def create_book_directory() -> None:

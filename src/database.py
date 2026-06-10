@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from src.utility_functions import *
 from src.storage import *
 
-logger = initialize_logging() # setting logging
+logger = initialize_logging(__name__) # setting logging
 
 """
 ## Database Table:

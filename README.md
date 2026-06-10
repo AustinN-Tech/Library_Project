@@ -81,8 +81,9 @@ Note: This project was designed for personal devices or small local networks, it
 Using a Raspberry Pi, it is easy to setup Library Project to act as personal library for devices on your local network.  
 
 Steps:
-1. Open flask to accept traffic from all devices on the network, as shown in "Getting Started"
-2. Start the run.py file directly in terminal or create a `tmux` session to manage the terminal process in the background  
+1. Clone the git repository onto the Raspberry Pi, as shown in "Getting Started"
+2. Open flask to accept traffic from all devices on the network, as shown in "Getting Started"
+3. Start the run.py file directly in terminal or create a `tmux` session to manage the terminal process in the background  
 
 ### Future Features
 - [x] Upload, search, and delete books

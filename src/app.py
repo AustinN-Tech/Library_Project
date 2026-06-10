@@ -9,7 +9,7 @@ from pathlib import Path
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-logger = initialize_logging() # setting logging
+logger = initialize_logging(__name__) # setting logging
 
 @app.route("/")
 def home():
