@@ -1,7 +1,7 @@
 const ext_buttons = document.querySelectorAll(".extra_actions_button"); // returns static list of buttons
 ext_buttons.forEach(button => { // "forEach", essentially iterates through list and applies a function
     button.addEventListener("click", () => { // function being applied (listener for clicks)
-        const card = button.closest(".book_card"); // gets parent container ()
+        const card = button.closest(".book_card"); // gets relative parent container ()
         const dropdown = card.querySelector(".extra_actions_dropdown"); // obtain dropdown to local card
 
         dropdown.classList.toggle("hidden"); // toggle hidden class to hide or show dropdown

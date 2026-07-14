@@ -101,6 +101,7 @@ previous_button.addEventListener("click", () => {
     if (page_counter > min_page) {
         load_page(--page_counter);
         page_num.value = ""; // get rid of inputted value so placeholder (which tracks the page counter) is visible
+        check_bookmark_icon(page_counter);
     }
 });
 
@@ -108,6 +109,7 @@ next_button.addEventListener("click", () => {
     if (page_counter < max_page) {
         load_page(++page_counter);
         page_num.value = "";
+        check_bookmark_icon(page_counter);
     }
 });
 
@@ -117,12 +119,14 @@ document.addEventListener("keydown", () => {
         if (page_counter < max_page) {
             load_page(++page_counter);
             page_num.value = "";
+            check_bookmark_icon(page_counter);
         }
     }
     else if (event.key === "ArrowLeft") {
         if (page_counter > min_page) {
             load_page(--page_counter);
-            page_num.value = ""; 
+            page_num.value = "";
+            check_bookmark_icon(page_counter);
         }
     }
 });
@@ -142,5 +146,79 @@ page_num.addEventListener("keydown", () => { // allows users to jump to requeste
         load_page(entered_page);
         page_num.placeholder = `${entered_page}`;
         page_counter = entered_page; // update page_counter
+        check_bookmark_icon(page_counter)
     }
 })
+
+// Bookmark Code:
+const bookmark_button = document.querySelector(".bookmark_button");
+const bookmark_icon = document.querySelector(".bookmark_icon");
+const navigate_bookmark_button = document.querySelector(".jump_to_bookmark");
+
+async function get_bookmark() { // obtains current bookmarked page number from flask. Page number is either int or null
+    try {
+        const response = await fetch("/return_bookmarked_page", {method:"GET"});
+        if (!response.ok) {
+            throw new Error(`get_bookmark failed: ${response.status}`);
+        }
+        const result = response.json();
+        console.log("Returning bookmarked page number...");
+        return result;
+    } catch (error) {
+        console.error(`Error: ${error}`);
+    }
+}
+
+async function update_bookmark(bookmark_page) { // updates bookmarked page in flask, bookmark_page agrument can be int or null
+    try {
+        const response = await fetch("/update_bookmark", {
+            method:"POST",
+            headers: {"Content-Type": "application/json"},
+            body:JSON.stringify(
+                {
+                    "book_id": book_id,
+                    "page_number": bookmark_page
+                }
+            )
+        });
+        if (!response.ok) {
+            throw new Error(`update_bookmark failed: ${response.status}`);
+        }
+        result = response.json();
+        console.log(result.message)
+        return result;
+    } catch (error) {
+        console.error(`Error: ${error}`);
+    }
+}
+
+bookmark_button.addEventListener("click", () => { // used for bookmarking a new page or removing a bookmark
+    if (bookmarked_page === page_counter) { // if bookmarking bookmarked page, remove bookmark.
+        bookmarked_page = null;
+        // bookmark_icon = empty_bookmark
+    } else { // if bookmark is not assigned or is assigned to another page, assign bookmark to current page
+        bookmarked_page = page_counter;
+        // bookmark_icon = full_bookmark
+    }
+
+    const bookmarker_update = await update_bookmark(bookmarked_page)
+})
+
+
+navigate_bookmark_button.addEventListener("click", () => {
+    if (!bookmarked_page) { // if there is no bookmark, this button does nothing
+        console.log("No bookmarked page to navigate to...")
+        return
+    }
+
+    load_page(Number(bookmarked_page))
+    page_num.value = ""; 
+})
+
+function check_bookmark_icon(page_number) {
+    if (page_number === bookmarked_page) {
+        // bookmark_icon = full_bookmark
+    } else {
+        // bookmark_icon = empty_bookmark
+    }
+}

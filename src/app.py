@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file, request, redirect, url_for, flash
+from flask import Flask, render_template, send_file, request, redirect, url_for, flash, Response, jsonify
 from datetime import datetime # for formatting time
 from src.storage import return_pdf_file_path, change_cover_file, create_book_directory, BOOK_DIR, COVER_DIR
 from src.utility_functions import initialize_logging, book_file_check, cover_file_check
@@ -145,3 +145,19 @@ takes id and title as arguments,
 def read_book(id, title):
     book = db.get_book_by_id(id)
     return render_template("read_book.html", book=book)
+
+@app.route("/update_bookmark", methods=["POST"])
+def update_bookmark() -> Response:
+    new_bookmark_details = request.get_json()
+    
+    if new_bookmark_details is None:
+        return jsonify({"error": "No JSON received"}), 400
+    
+    bookmarked_book = db.get_book_by_id(book_id=int(new_bookmark_details["book_id"]))
+    db.update_book(
+        book=bookmarked_book,
+        column="bookmark_page",
+        value=int(new_bookmark_details["page_number"])
+        )
+
+    return jsonify({"message": "bookmark update success"})

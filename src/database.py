@@ -31,7 +31,8 @@ def create_db():
         date_added INTEGER NOT NULL DEFAULT (strftime('%s','now')),
         file_key TEXT NOT NULL UNIQUE,
         cover_path TEXT NOT NULL,
-        original_filename TEXT NOT NULL
+        original_filename TEXT NOT NULL,
+        bookmark_page INT
     )
     """)
     conn.commit()
@@ -47,6 +48,7 @@ class Book:
     cover_path: str
     original_filename: str
     author: str = 'Unknown'
+    bookmark_page: int | None = None
 
 def row_to_book(row) -> Book: # converts db entry row to book object
     return Book(
@@ -57,7 +59,8 @@ def row_to_book(row) -> Book: # converts db entry row to book object
         date_added = row[4],
         file_key = row[5],
         cover_path = row[6],
-        original_filename= row[7]
+        original_filename= row[7],
+        bookmark_page=row[8]
     )
 
 def db_connection_handling(func): # handles opening and closing db connection for functions
@@ -125,7 +128,7 @@ def full_delete_all_db(conn: sqlite3.Connection) -> None:
     
 @error_handling
 @db_connection_handling
-def update_book(conn: sqlite3.Connection, book: Book, column: str, value: str) -> None:
+def update_book(conn: sqlite3.Connection, book: Book, column: str, value: str | int) -> None:
     column = validate_column(column)
     if not column:
         raise ValueError("Invalid column")

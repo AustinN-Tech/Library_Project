@@ -31,8 +31,10 @@ def error_handling(func): #error handling logic decorator
             return func(*args, **kwargs)
         except sqlite3.Error as e:
             logger.error(f"Database error occurred in {func.__name__}: {e}") #returns original function name, good for logging
+            raise
         except Exception as e:
             logger.error(f"Error occurred in {func.__name__}: {e}")
+            raise
     return wrapper
 
 # Prompts User for Book Title:
