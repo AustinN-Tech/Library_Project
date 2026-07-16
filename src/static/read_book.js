@@ -155,18 +155,10 @@ const bookmark_button = document.querySelector(".bookmark_button");
 const bookmark_icon = document.querySelector(".bookmark_icon");
 const navigate_bookmark_button = document.querySelector(".jump_to_bookmark");
 
-async function get_bookmark() { // obtains current bookmarked page number from flask. Page number is either int or null
-    try {
-        const response = await fetch("/return_bookmarked_page", {method:"GET"});
-        if (!response.ok) {
-            throw new Error(`get_bookmark failed: ${response.status}`);
-        }
-        const result = response.json();
-        console.log("Returning bookmarked page number...");
-        return result;
-    } catch (error) {
-        console.error(`Error: ${error}`);
-    }
+if (bookmarked_page === "None") {
+    bookmarked_page = null
+} else {
+    bookmarked_page = Number(bookmarked_page)
 }
 
 async function update_bookmark(bookmark_page) { // updates bookmarked page in flask, bookmark_page agrument can be int or null
@@ -184,7 +176,7 @@ async function update_bookmark(bookmark_page) { // updates bookmarked page in fl
         if (!response.ok) {
             throw new Error(`update_bookmark failed: ${response.status}`);
         }
-        result = response.json();
+        const result = await response.json();
         console.log(result.message)
         return result;
     } catch (error) {
@@ -192,16 +184,15 @@ async function update_bookmark(bookmark_page) { // updates bookmarked page in fl
     }
 }
 
-bookmark_button.addEventListener("click", () => { // used for bookmarking a new page or removing a bookmark
-    if (bookmarked_page === page_counter) { // if bookmarking bookmarked page, remove bookmark.
+bookmark_button.addEventListener("click", async () => { // used for bookmarking a new page or removing a bookmark
+    if (bookmarked_page == page_counter) { // if bookmarking bookmarked page, remove bookmark.
         bookmarked_page = null;
-        // bookmark_icon = empty_bookmark
     } else { // if bookmark is not assigned or is assigned to another page, assign bookmark to current page
         bookmarked_page = page_counter;
-        // bookmark_icon = full_bookmark
     }
 
     const bookmarker_update = await update_bookmark(bookmarked_page)
+    check_bookmark_icon(page_counter);
 })
 
 
@@ -211,14 +202,20 @@ navigate_bookmark_button.addEventListener("click", () => {
         return
     }
 
-    load_page(Number(bookmarked_page))
+    page_counter = bookmarked_page;
+    load_page(page_counter)
     page_num.value = ""; 
+    check_bookmark_icon(page_counter);
 })
 
 function check_bookmark_icon(page_number) {
     if (page_number === bookmarked_page) {
-        // bookmark_icon = full_bookmark
+        bookmark_icon.src = "/static/images/icons/filled_bookmark.png"
+        bookmark_icon.alt = "filled"
     } else {
-        // bookmark_icon = empty_bookmark
+        bookmark_icon.src = "/static/images/icons/empty_bookmark.png"
+        bookmark_icon.alt = "empty"
     }
 }
+
+check_bookmark_icon(page_counter);

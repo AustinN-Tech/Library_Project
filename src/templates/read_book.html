@@ -21,18 +21,20 @@
 
     <main class="book_viewer">
 
-        <div class="controls">
-            <button class="previous"> < Previous</button>
-            <input type="text" placeholder="1" class="page_number">
-            <span class="page_max">/ 1</span>
-            <button class="next"> Next > </button>
-        </div>
-        <div class="bookmark">
-            <div class="bookmark_button">
-                <img class="bookmark_icon">
+        <section class="controls">
+            <div class="page_controls">
+                <button class="previous"> < Previous</button>
+                <input type="text" placeholder="1" class="page_number">
+                <span class="page_max">/ 1</span>
+                <button class="next"> Next > </button>
             </div>
-            <button class="jump_to_bookmark">></button>
-        </div>
+            <div class="bookmark">
+                <div class="bookmark_button">
+                    <img class="bookmark_icon">
+                </div>
+                <button class="jump_to_bookmark">></button>
+            </div>
+        </section>
 
         <div class="canvas_container">
             <canvas></canvas>
@@ -42,7 +44,7 @@
     <script>
         const pdf_URL = "{{ url_for('open_pdf', id=book.id)}}";
         const book_id = "{{ book.id }}"
-        let bookmarked_page = "{{ book.bookmark_page }}"
+        let bookmarked_page = "{{ book.bookmark_page }}";
     </script> <!-- Obtain flask URL for PDF to pass to JS-->
     <script type="module" src="{{ url_for('static', filename='read_book.js')}}"></script>
 </body>
