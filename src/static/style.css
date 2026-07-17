@@ -515,6 +515,8 @@ button:hover {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--text);
+    display: flex;
+    align-items: center;
 }
 
 .page_number {
